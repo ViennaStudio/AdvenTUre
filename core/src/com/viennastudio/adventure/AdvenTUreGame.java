@@ -1,31 +1,27 @@
 package com.viennastudio.adventure;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
-public class AdvenTUreGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
+
+public class AdvenTUreGame extends Game {
+
+	public SpriteBatch batch;
+	public BitmapFont font;
+
+	public void create() {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		font = new BitmapFont(); // use libGDX's default Arial font
+		setScreen(new MainMenuScreen(this));
 	}
 
-	@Override
-	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public void render() {
+		super.render(); // important!
 	}
-	
-	@Override
-	public void dispose () {
+
+	public void dispose() {
 		batch.dispose();
-		img.dispose();
+		font.dispose();
 	}
 }
