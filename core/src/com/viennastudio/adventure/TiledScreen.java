@@ -4,8 +4,10 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -14,7 +16,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.viennastudio.adventure.entities.AnimationMap;
 import com.viennastudio.adventure.entities.Player;
+import com.viennastudio.adventure.util.AnimationLoader;
 
 import static com.viennastudio.adventure.Constants.WORLD_HEIGHT;
 import static com.viennastudio.adventure.Constants.WORLD_WIDTH;
@@ -37,6 +41,18 @@ public class TiledScreen implements Screen {
     private static final String mapFileName = "tiles/Karlsplatz.tmx";
 
 
+    private Animation<TextureRegion> playerStillAnimation;
+    private Texture playerStillTexture;
+    private Animation<TextureRegion> playerUpAnimation;
+    private Texture playerUpTexture;
+    private Animation<TextureRegion> playerDownAnimation;
+    private Texture playerDownTexture;
+    private Animation<TextureRegion> playerLeftAnimation;
+    private Texture playerLeftTexture;
+    private Animation<TextureRegion> playerRightAnimation;
+    private Texture playerRightTexture;
+
+
     public TiledScreen(AdvenTUreGame game) {
         this.game = game;
     }
@@ -53,8 +69,27 @@ public class TiledScreen implements Screen {
 
         renderer.setView(camera);
 
+        playerStillTexture = new Texture("player/PlayerStill.png");
+        playerDownTexture = new Texture("player/PlayerDown.png");
+        playerUpTexture = new Texture("player/PlayerUp.png");
+        playerLeftTexture = new Texture("player/PlayerLeft.png");
+        playerRightTexture = new Texture("player/PlayerRight.png");
 
-        player = new Player(new Sprite(new Texture("badlogic.jpg")), (TiledMapTileLayer) map.getLayers().get(collisionLayer));
+        playerStillAnimation = AnimationLoader.load(playerStillTexture);
+        playerUpAnimation = AnimationLoader.load(playerUpTexture);
+        playerLeftAnimation = AnimationLoader.load(playerLeftTexture);
+        playerDownAnimation = AnimationLoader.load(playerDownTexture);
+        playerRightAnimation = AnimationLoader.load(playerRightTexture);
+
+        AnimationMap animationMap = new AnimationMap(
+                playerStillAnimation,
+                playerLeftAnimation,
+                playerRightAnimation,
+                playerUpAnimation,
+                playerDownAnimation
+        );
+
+        player = new Player(animationMap, (TiledMapTileLayer) map.getLayers().get(collisionLayer));
         Gdx.input.setInputProcessor(player);
 
         player.setSize(0.9f, 0.9f);
