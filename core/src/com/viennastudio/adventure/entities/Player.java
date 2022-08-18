@@ -18,6 +18,7 @@ public class Player extends Sprite implements InputProcessor {
     private Vector2 velocity = new Vector2();
     private static final float MAX_SPEED = Constants.PLAYER_SPEED;
     private float increment, animationTime = 0;
+    private AnimationMap animationMap;
     private TiledMapTileLayer collisionLayer;
     private final String blockedKey = "blocked";
     public String name = "Alexander Budik";
@@ -25,15 +26,28 @@ public class Player extends Sprite implements InputProcessor {
     private int ECTS = 0;
     private int semester = 1;
 
-    public Player(Sprite sprite, TiledMapTileLayer collisionLayer) {
-        super(sprite);
+    public Player(
+            AnimationMap animationMap,
+            TiledMapTileLayer collisionLayer
+    ) {
+        super(animationMap.getFirstFrame());
         this.collisionLayer = collisionLayer;
+        this.animationMap = animationMap;
     }
 
     @Override
     public void draw(Batch batch) {
         update(Gdx.graphics.getDeltaTime());
-        super.draw(batch);
+        batch.draw(
+                animationMap.getFrame(
+                        Gdx.graphics.getDeltaTime(),
+                        velocity
+                ),
+                getX(),
+                getY(),
+                getWidth(),
+                getHeight()
+        );
     }
 
     private void update(float deltaTime) {
