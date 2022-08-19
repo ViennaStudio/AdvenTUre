@@ -8,4 +8,7 @@ public class Constants {
     public static final int MAX_ECTS = 180;
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
+    public static final int ANIMATION_COLS = 1;
+    public static final int ANIMATION_SIZE = 16;
+    public static final float ANIMATION_INTERVAL = 1/8f; // 8fps
 }
