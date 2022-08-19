@@ -2,9 +2,7 @@ package com.viennastudio.adventure.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -21,7 +19,6 @@ public class Player extends Sprite implements InputProcessor {
     private TiledMapTileLayer collisionLayer;
     private final String blockedKey = "blocked";
     public String name = "Alexander Budik";
-    private float XP = 0;
     private int ECTS = 0;
     private int mentalHealth = 100;
 
@@ -34,10 +31,6 @@ public class Player extends Sprite implements InputProcessor {
     public void draw(Batch batch) {
         update(Gdx.graphics.getDeltaTime());
         super.draw(batch);
-    }
-
-    public int getMentalHealth() {
-        return mentalHealth;
     }
 
     private void update(float deltaTime) {
@@ -202,14 +195,6 @@ public class Player extends Sprite implements InputProcessor {
         return false;
     }
 
-    public float getXP() {
-        return XP;
-    }
-
-    public void setXP(float XP) {
-        this.XP = XP;
-    }
-
     public int getECTS() {
         return ECTS;
     }
@@ -217,4 +202,11 @@ public class Player extends Sprite implements InputProcessor {
     public void setECTS(int ECTS) {
         this.ECTS = ECTS;
     }
+    public int getMentalHealth() {
+        return mentalHealth;
+    }
+    public void setMentalHealth(int mentalHealth) {
+        this.mentalHealth = Math.min(Math.max(mentalHealth, 0), 100);
+    }
+
 }
