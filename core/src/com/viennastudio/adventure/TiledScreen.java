@@ -31,10 +31,11 @@ public class TiledScreen implements Screen {
     private Sprite temporarySprite;
     private SpriteBatch spriteBatch;
 
-    private static final int[] floorLayers = new int[]{0, 1};
-    private static final int[] skyLayers = new int[]{2, 3};
-    private static final int collisionLayer = 1;
-    private static final String mapFileName = "tiles/Karlsplatz.tmx";
+//    private static final int[] floorLayers = new int[]{6, 7, 11, 8};
+    private static final int[] floorLayers = new int[]{1, 2, 3, 4, 5};
+    private static final int[] skyLayers = new int[]{6, 7};
+    private static final int collisionLayer = 5;
+    private static final String mapFileName = "tiles/KarlsplatzNew.tmx";
 
 
     public TiledScreen(AdvenTUreGame game) {
