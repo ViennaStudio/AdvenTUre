@@ -2,6 +2,7 @@ package com.viennastudio.adventure;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -13,7 +14,7 @@ public class AdvenTUreGame extends Game {
 
 	public void create() {
 		batch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("fonts/Silkscreen.fnt")); // use libGDX's default Arial font
+		font = new BitmapFont(Gdx.files.internal("fonts/Silkscreen.fnt")); // use Silkscreen.fnt for the font
 		setScreen(new MainMenuScreen(this));
 	}
 
