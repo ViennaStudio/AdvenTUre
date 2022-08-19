@@ -66,7 +66,7 @@ public class TiledScreen implements Screen {
         player.setY(11);
         spriteBatch = new SpriteBatch();
 
-        playerStatisticsHUD = new PlayerStatisticsHUD();
+        playerStatisticsHUD = new PlayerStatisticsHUD(player.getMentalHealth());
 
         shapeRenderer = new ShapeRenderer();
     }
@@ -90,15 +90,10 @@ public class TiledScreen implements Screen {
         renderer.render(skyLayers);
 
         spriteBatch.begin();
-        game.font.draw(spriteBatch, player.name, 10, 15);
-        spriteBatch.end();
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        playerStatisticsHUD.drawInside(shapeRenderer);
+        playerStatisticsHUD.drawPlayerStatistics(shapeRenderer, player.getMentalHealth(), spriteBatch, game.font);
         shapeRenderer.end();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        playerStatisticsHUD.drawOutside(shapeRenderer);
-        shapeRenderer.end();
+        spriteBatch.end();
 
 
         Vector3 position = this.camera.position;
