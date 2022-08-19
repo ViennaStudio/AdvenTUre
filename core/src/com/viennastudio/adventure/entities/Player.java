@@ -2,9 +2,7 @@ package com.viennastudio.adventure.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -22,9 +20,8 @@ public class Player extends Sprite implements InputProcessor {
     private TiledMapTileLayer collisionLayer;
     private final String blockedKey = "blocked";
     public String name = "Alexander Budik";
-    private float XP = 0;
     private int ECTS = 0;
-    private int semester = 1;
+    private int mentalHealth = 100;
 
     public Player(
             AnimationMap animationMap,
@@ -212,14 +209,6 @@ public class Player extends Sprite implements InputProcessor {
         return false;
     }
 
-    public float getXP() {
-        return XP;
-    }
-
-    public void setXP(float XP) {
-        this.XP = XP;
-    }
-
     public int getECTS() {
         return ECTS;
     }
@@ -227,15 +216,11 @@ public class Player extends Sprite implements InputProcessor {
     public void setECTS(int ECTS) {
         this.ECTS = ECTS;
     }
-
-    public int getSemester() {
-        return semester;
+    public int getMentalHealth() {
+        return mentalHealth;
+    }
+    public void setMentalHealth(int mentalHealth) {
+        this.mentalHealth = Math.min(Math.max(mentalHealth, 0), 100);
     }
 
-    public void setSemester(int semester) {
-        if (semester > Constants.MAX_SEMESTER || semester <= 0) {
-            throw new RuntimeException("semester has to be between 1 and " + Constants.MAX_SEMESTER);
-        }
-        this.semester = semester;
-    }
 }

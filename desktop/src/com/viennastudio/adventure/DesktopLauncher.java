@@ -8,6 +8,7 @@ import com.viennastudio.adventure.AdvenTUreGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setWindowedMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 		config.setForegroundFPS(60);
 		config.setTitle("AdvenTUre");
 		new Lwjgl3Application(new AdvenTUreGame(), config);

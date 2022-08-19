@@ -4,9 +4,11 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -18,7 +20,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.viennastudio.adventure.entities.AnimationMap;
 import com.viennastudio.adventure.entities.Player;
+import com.viennastudio.adventure.hud.PlayerStatisticsHUD;
 import com.viennastudio.adventure.util.AnimationLoader;
+
+import java.awt.*;
 
 import static com.viennastudio.adventure.Constants.WORLD_HEIGHT;
 import static com.viennastudio.adventure.Constants.WORLD_WIDTH;
@@ -27,6 +32,7 @@ public class TiledScreen implements Screen {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
+    private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
     private Viewport viewport;
     private final AdvenTUreGame game;
@@ -34,6 +40,7 @@ public class TiledScreen implements Screen {
 
     private Sprite temporarySprite;
     private SpriteBatch spriteBatch;
+    private PlayerStatisticsHUD playerStatisticsHUD;
 
     private static final int[] floorLayers = new int[]{0, 1};
     private static final int[] skyLayers = new int[]{2, 3};
@@ -96,6 +103,11 @@ public class TiledScreen implements Screen {
         player.setX(17);
         player.setY(11);
         spriteBatch = new SpriteBatch();
+
+        shapeRenderer = new ShapeRenderer();
+
+        //PlayerHud Creation
+        playerStatisticsHUD = new PlayerStatisticsHUD(player, game.font, spriteBatch, shapeRenderer);
     }
 
     @Override
@@ -116,10 +128,15 @@ public class TiledScreen implements Screen {
 
         renderer.render(skyLayers);
 
-        spriteBatch.begin();
-        game.font.draw(spriteBatch, player.name, 10, 15);
-        spriteBatch.end();
+        //ShapeRenderer for HUD Graphics
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        playerStatisticsHUD.drawHudGraphics();
+        shapeRenderer.end();
 
+        //Sprite Batch Rendering for HUD Text
+        spriteBatch.begin();
+        playerStatisticsHUD.drawHudText();
+        spriteBatch.end();
 
         Vector3 position = this.camera.position;
         position.x += (player.getX() - position.x) * Constants.CAMERA_SPEED * delta;
