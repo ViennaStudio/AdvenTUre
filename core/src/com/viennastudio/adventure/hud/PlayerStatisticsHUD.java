@@ -6,50 +6,56 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.viennastudio.adventure.Constants;
+import com.viennastudio.adventure.entities.Player;
 
 public class PlayerStatisticsHUD {
-    private final int xStartCoordinate;
-    private int playerHealth;
+    private Player player;
+    private ShapeRenderer renderer;
     private BitmapFont font;
+    private SpriteBatch spriteBatch;
 
-    public PlayerStatisticsHUD(int playerHealth) {
-        xStartCoordinate = 200;
-        this.playerHealth = playerHealth;
-        font = new BitmapFont();
+    public PlayerStatisticsHUD(Player player, BitmapFont font, SpriteBatch spriteBatch, ShapeRenderer renderer) {
+        this.player = player;
+        this.font = font;
+        this.font.getData().setScale(0.66f);
+        this.spriteBatch = spriteBatch;
+        this.renderer = renderer;
     }
 
-    private void drawInside(ShapeRenderer renderer, int mentalHealth) {
-        this.playerHealth = mentalHealth;
-        renderer.setColor(Color.RED);
-        renderer.rect(xStartCoordinate, Constants.WINDOW_HEIGHT - 21, 200, 21);
-        renderer.setColor(Color.GREEN);
-        renderer.rect(xStartCoordinate, Constants.WINDOW_HEIGHT - 21, this.playerHealth * 2, 21);
+    public void drawHudText() {
+       drawTextHealthBar();
+       drawECTS();
     }
 
-    private void drawOutside(ShapeRenderer renderer) {
-        renderer.setColor(Color.WHITE);
-        renderer.rect(xStartCoordinate, Constants.WINDOW_HEIGHT - 21, 200, 21);
+    public void drawHudGraphics() {
+        drawMentalHealthBar();
     }
 
-    private void drawMentalHealthBar(ShapeRenderer renderer, int mentalHealth, SpriteBatch batch, BitmapFont font) {
-        drawText(batch, font);
-        drawInside(renderer, mentalHealth);
-        renderer.setAutoShapeType(true);
-        renderer.set(ShapeRenderer.ShapeType.Line);
-        drawOutside(renderer);
+    private void drawTextHealthBar() {
+        this.font.setColor(Color.WHITE);
+        this.font.draw(this.spriteBatch, "Mental Health: ", 5, Constants.WINDOW_HEIGHT - 10);
+        this.font.setColor(Color.BLACK);
+        this.font.draw(this.spriteBatch, Integer.toString(player.getMentalHealth()), 285, Constants.WINDOW_HEIGHT - 10);
     }
 
-    private void drawText(SpriteBatch batch, BitmapFont font) {
-        font.getData().setScale(0.5f);
-        font.draw(batch, "Mental Health: " + this.playerHealth, 5, Constants.WINDOW_HEIGHT - 6);
+    private void drawECTS() {
+        this.font.setColor(Color.WHITE);
+        this.font.draw(this.spriteBatch, "ECTS: " + this.player.getECTS() + "/" + Constants.MAX_ECTS, 500, Constants.WINDOW_HEIGHT - 10);
     }
 
-    public void drawPlayerStatistics(ShapeRenderer renderer, int mentalHealth, SpriteBatch batch, BitmapFont font) {
-        drawMentalHealthBar(renderer, mentalHealth, batch, font);
+    private void drawMentalHealthBar() {
+        int startingPos = 202;
+        // Red Bar beneith the green
+        this.renderer.setColor(Color.RED);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, 200, 30);
+        // Green Bar
+        this.renderer.setColor(Color.GREEN);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, player.getMentalHealth() * 2, 30);
+        // Outline
+        this.renderer.setColor(Color.WHITE);
+        this.renderer.setAutoShapeType(true);
+        this.renderer.set(ShapeRenderer.ShapeType.Line);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, 200, 30);
     }
-
-
-
-
 
 }

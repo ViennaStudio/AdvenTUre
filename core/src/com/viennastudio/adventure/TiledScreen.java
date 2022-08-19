@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -17,6 +18,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.viennastudio.adventure.entities.Player;
 import com.viennastudio.adventure.hud.PlayerStatisticsHUD;
+
+import java.awt.*;
 
 import static com.viennastudio.adventure.Constants.WORLD_HEIGHT;
 import static com.viennastudio.adventure.Constants.WORLD_WIDTH;
@@ -66,9 +69,10 @@ public class TiledScreen implements Screen {
         player.setY(11);
         spriteBatch = new SpriteBatch();
 
-        playerStatisticsHUD = new PlayerStatisticsHUD(player.getMentalHealth());
-
         shapeRenderer = new ShapeRenderer();
+
+        //PlayerHud Creation
+        playerStatisticsHUD = new PlayerStatisticsHUD(player, game.font, spriteBatch, shapeRenderer);
     }
 
     @Override
@@ -89,12 +93,15 @@ public class TiledScreen implements Screen {
 
         renderer.render(skyLayers);
 
-        spriteBatch.begin();
+        //ShapeRenderer for HUD Graphics
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        playerStatisticsHUD.drawPlayerStatistics(shapeRenderer, player.getMentalHealth(), spriteBatch, game.font);
+        playerStatisticsHUD.drawHudGraphics();
         shapeRenderer.end();
-        spriteBatch.end();
 
+        //Sprite Batch Rendering for HUD Text
+        spriteBatch.begin();
+        playerStatisticsHUD.drawHudText();
+        spriteBatch.end();
 
         Vector3 position = this.camera.position;
         position.x += (player.getX() - position.x) * Constants.CAMERA_SPEED * delta;
