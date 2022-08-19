@@ -33,7 +33,7 @@ public class TiledScreen implements Screen {
 
 //    private static final int[] floorLayers = new int[]{6, 7, 11, 8};
     private static final int[] floorLayers = new int[]{1, 2, 3, 4, 5};
-    private static final int[] skyLayers = new int[]{6, 7};
+    private static final int[] skyLayers = new int[]{6, 7, 8};
     private static final int collisionLayer = 5;
     private static final String mapFileName = "tiles/KarlsplatzNew.tmx";
 
