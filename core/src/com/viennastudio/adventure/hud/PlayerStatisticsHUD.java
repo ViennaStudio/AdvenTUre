@@ -16,14 +16,15 @@ public class PlayerStatisticsHUD {
     public PlayerStatisticsHUD(Player player, BitmapFont font, SpriteBatch spriteBatch, ShapeRenderer renderer) {
         this.player = player;
         this.font = font;
-        this.font.getData().setScale(0.66f);
         this.spriteBatch = spriteBatch;
         this.renderer = renderer;
     }
 
     public void drawHudText() {
-       drawTextHealthBar();
-       drawECTS();
+        this.font.getData().setScale(0.66f);
+        drawTextHealthBar();
+        drawECTS();
+        this.font.getData().setScale(1f);
     }
 
     public void drawHudGraphics() {
