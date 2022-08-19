@@ -140,8 +140,6 @@ public class Player extends Sprite implements InputProcessor {
             case Input.Keys.W:
                 velocity.y = MAX_SPEED;
                 animationTime = 0;
-                //Mental Health Testing
-                mentalHealth = mentalHealth - 1;
                 break;
             case Input.Keys.S:
                 velocity.y = -MAX_SPEED;
