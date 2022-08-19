@@ -24,6 +24,7 @@ public class Player extends Sprite implements InputProcessor {
     private float XP = 0;
     private int ECTS = 0;
     private int semester = 1;
+    private int mentalHealth = 100;
 
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer) {
         super(sprite);
@@ -34,6 +35,10 @@ public class Player extends Sprite implements InputProcessor {
     public void draw(Batch batch) {
         update(Gdx.graphics.getDeltaTime());
         super.draw(batch);
+    }
+
+    public int getMentalHealth() {
+        return mentalHealth;
     }
 
     private void update(float deltaTime) {
@@ -136,6 +141,8 @@ public class Player extends Sprite implements InputProcessor {
             case Input.Keys.W:
                 velocity.y = MAX_SPEED;
                 animationTime = 0;
+                //Mental Health Testing
+                mentalHealth = mentalHealth - 1;
                 break;
             case Input.Keys.S:
                 velocity.y = -MAX_SPEED;
