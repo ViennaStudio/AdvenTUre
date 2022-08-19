@@ -23,7 +23,6 @@ public class Player extends Sprite implements InputProcessor {
     public String name = "Alexander Budik";
     private float XP = 0;
     private int ECTS = 0;
-    private int semester = 1;
     private int mentalHealth = 100;
 
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer) {
@@ -219,16 +218,5 @@ public class Player extends Sprite implements InputProcessor {
 
     public void setECTS(int ECTS) {
         this.ECTS = ECTS;
-    }
-
-    public int getSemester() {
-        return semester;
-    }
-
-    public void setSemester(int semester) {
-        if (semester > Constants.MAX_SEMESTER || semester <= 0) {
-            throw new RuntimeException("semester has to be between 1 and " + Constants.MAX_SEMESTER);
-        }
-        this.semester = semester;
     }
 }
