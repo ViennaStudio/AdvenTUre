@@ -10,7 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.viennastudio.adventure.Constants;
+import com.viennastudio.adventure.util.Constants;
 
 public class Player extends Sprite implements InputProcessor {
     private Vector2 velocity = new Vector2();

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.viennastudio.adventure.Constants;
+import com.viennastudio.adventure.util.Constants;
 import com.viennastudio.adventure.entities.Player;
 
 public class PlayerStatisticsHUD {

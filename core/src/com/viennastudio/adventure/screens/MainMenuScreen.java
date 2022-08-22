@@ -1,4 +1,4 @@
-package com.viennastudio.adventure;
+package com.viennastudio.adventure.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.viennastudio.adventure.AdvenTUreGame;
+import com.viennastudio.adventure.levels.KarlsplatzLevel;
 
 public class MainMenuScreen implements Screen {
 

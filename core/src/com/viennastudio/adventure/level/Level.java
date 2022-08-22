@@ -17,12 +17,12 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.viennastudio.adventure.AdvenTUreGame;
-import com.viennastudio.adventure.Constants;
-import com.viennastudio.adventure.MainMenuScreen;
+import com.viennastudio.adventure.util.Constants;
+import com.viennastudio.adventure.screens.MainMenuScreen;
 import com.viennastudio.adventure.hud.PlayerStatisticsHUD;
 
-import static com.viennastudio.adventure.Constants.WORLD_HEIGHT;
-import static com.viennastudio.adventure.Constants.WORLD_WIDTH;
+import static com.viennastudio.adventure.util.Constants.WORLD_HEIGHT;
+import static com.viennastudio.adventure.util.Constants.WORLD_WIDTH;
 
 public abstract class Level implements Disposable, Screen {
     protected TiledMap map;

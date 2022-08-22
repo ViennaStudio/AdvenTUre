@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import com.viennastudio.adventure.AdvenTUreGame;
-import com.viennastudio.adventure.Constants;
+import com.viennastudio.adventure.util.Constants;
 
 public class HtmlLauncher extends GwtApplication {
 

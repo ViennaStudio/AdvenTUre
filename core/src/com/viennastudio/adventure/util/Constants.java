@@ -1,4 +1,4 @@
-package com.viennastudio.adventure;
+package com.viennastudio.adventure.util;
 
 public class Constants {
     public static final float CAMERA_SPEED = 1.5f;
