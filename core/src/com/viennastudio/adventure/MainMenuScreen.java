@@ -37,7 +37,7 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                game.setScreen(new TiledScreen(game));
+                game.setScreen(new KarlsplatzLevel(game));
                 return true;
             }
 
@@ -47,7 +47,7 @@ public class MainMenuScreen implements Screen {
                     Gdx.app.exit();
                     return true;
                 }
-                game.setScreen(new TiledScreen(game));
+                game.setScreen(new KarlsplatzLevel(game));
                 return true;
             }
         });
