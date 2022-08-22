@@ -24,11 +24,9 @@ public class Player extends Sprite implements InputProcessor {
     private int mentalHealth = 100;
 
     public Player(
-            AnimationMap animationMap,
-            TiledMapTileLayer collisionLayer
+            AnimationMap animationMap
     ) {
         super(animationMap.getFirstFrame());
-        this.collisionLayer = collisionLayer;
         this.animationMap = animationMap;
     }
 
@@ -223,4 +221,11 @@ public class Player extends Sprite implements InputProcessor {
         this.mentalHealth = Math.min(Math.max(mentalHealth, 0), 100);
     }
 
+    public TiledMapTileLayer getCollisionLayer() {
+        return collisionLayer;
+    }
+
+    public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
+        this.collisionLayer = collisionLayer;
+    }
 }

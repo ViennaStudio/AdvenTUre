@@ -48,20 +48,9 @@ public class TiledScreen implements Screen {
     private static final String mapFileName = "tiles/Karlsplatz.tmx";
 
 
-    private Animation<TextureRegion> playerStillAnimation;
-    private Texture playerStillTexture;
-    private Animation<TextureRegion> playerUpAnimation;
-    private Texture playerUpTexture;
-    private Animation<TextureRegion> playerDownAnimation;
-    private Texture playerDownTexture;
-    private Animation<TextureRegion> playerLeftAnimation;
-    private Texture playerLeftTexture;
-    private Animation<TextureRegion> playerRightAnimation;
-    private Texture playerRightTexture;
-
-
     public TiledScreen(AdvenTUreGame game) {
         this.game = game;
+        this.player = game.player;
     }
 
 
@@ -76,27 +65,7 @@ public class TiledScreen implements Screen {
 
         renderer.setView(camera);
 
-        playerStillTexture = new Texture("player/PlayerStill.png");
-        playerDownTexture = new Texture("player/PlayerDown.png");
-        playerUpTexture = new Texture("player/PlayerUp.png");
-        playerLeftTexture = new Texture("player/PlayerLeft.png");
-        playerRightTexture = new Texture("player/PlayerRight.png");
-
-        playerStillAnimation = AnimationLoader.load(playerStillTexture);
-        playerUpAnimation = AnimationLoader.load(playerUpTexture);
-        playerLeftAnimation = AnimationLoader.load(playerLeftTexture);
-        playerDownAnimation = AnimationLoader.load(playerDownTexture);
-        playerRightAnimation = AnimationLoader.load(playerRightTexture);
-
-        AnimationMap animationMap = new AnimationMap(
-                playerStillAnimation,
-                playerLeftAnimation,
-                playerRightAnimation,
-                playerUpAnimation,
-                playerDownAnimation
-        );
-
-        player = new Player(animationMap, (TiledMapTileLayer) map.getLayers().get(collisionLayer));
+        player.setCollisionLayer((TiledMapTileLayer) map.getLayers().get(collisionLayer));
         Gdx.input.setInputProcessor(player);
 
         player.setSize(0.9f, 0.9f);
