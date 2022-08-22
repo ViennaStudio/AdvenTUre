@@ -18,6 +18,11 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = '11'
+        targetCompatibility = '11'
+    }
+
     version = '1.0'
     ext {
         appName = "AdvenTUre"
