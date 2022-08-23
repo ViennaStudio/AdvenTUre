@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.viennastudio.adventure.entities.AnimationMap;
 import com.viennastudio.adventure.entities.Player;
+import com.viennastudio.adventure.hud.ChatBox;
 import com.viennastudio.adventure.hud.PlayerStatisticsHUD;
 import com.viennastudio.adventure.util.AnimationLoader;
 
@@ -41,6 +42,7 @@ public class TiledScreen implements Screen {
     private Sprite temporarySprite;
     private SpriteBatch spriteBatch;
     private PlayerStatisticsHUD playerStatisticsHUD;
+    private ChatBox chatBox;
 
     private static final int[] floorLayers = new int[]{0, 1};
     private static final int[] skyLayers = new int[]{2, 3};
@@ -108,6 +110,9 @@ public class TiledScreen implements Screen {
 
         //PlayerHud Creation
         playerStatisticsHUD = new PlayerStatisticsHUD(player, game.font, spriteBatch, shapeRenderer);
+        //ChatBox
+        String text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   \n";
+        chatBox = new ChatBox(spriteBatch, game.font, "Alrun", text);
     }
 
     @Override
@@ -136,6 +141,7 @@ public class TiledScreen implements Screen {
         //Sprite Batch Rendering for HUD Text
         spriteBatch.begin();
         playerStatisticsHUD.drawHudText();
+        chatBox.draw();
         spriteBatch.end();
 
         Vector3 position = this.camera.position;
