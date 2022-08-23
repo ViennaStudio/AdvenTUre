@@ -31,15 +31,14 @@ public abstract class Level implements Disposable, Screen {
     protected OrthographicCamera camera;
     protected Viewport viewport;
     protected final AdvenTUreGame game;
-
-    private Sprite temporarySprite;
     protected SpriteBatch spriteBatch;
     protected PlayerStatisticsHUD playerStatisticsHUD;
 
-    protected LevelConfig levelConfig;
+    protected final LevelConfig levelConfig;
 
-    public Level(AdvenTUreGame game) {
+    public Level(AdvenTUreGame game, LevelConfig levelConfig) {
         this.game = game;
+        this.levelConfig = levelConfig;
     }
 
     @Override
