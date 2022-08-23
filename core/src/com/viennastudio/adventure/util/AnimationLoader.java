@@ -23,6 +23,6 @@ public class AnimationLoader {
                 frames[index++] = tmp[i][j];
             }
         }
-        return new Animation<>(Constants.ANIMATION_INTERVAL, frames);
+        return new Animation<TextureRegion>(Constants.ANIMATION_INTERVAL, frames);
     }
 }
