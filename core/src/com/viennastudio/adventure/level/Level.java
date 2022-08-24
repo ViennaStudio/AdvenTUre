@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -55,7 +54,7 @@ public abstract class Level implements Disposable, Screen {
         game.player.setCollisionLayer((TiledMapTileLayer) map.getLayers().get(levelConfig.collisionLayer));
         Gdx.input.setInputProcessor(game.player);
 
-        game.player.setSize(0.9f, 0.9f);
+        game.player.setSize(0.8f, 0.8f);
         game.player.setX(levelConfig.startCoordinates.x);
         game.player.setY(levelConfig.startCoordinates.y);
 
@@ -75,6 +74,8 @@ public abstract class Level implements Disposable, Screen {
         Gdx.gl.glClearColor(.25f, .25f, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        beforeRender();
+
         renderer.setView(camera);
         renderer.render(levelConfig.floorLayers);
 
@@ -84,6 +85,8 @@ public abstract class Level implements Disposable, Screen {
         game.batch.end();
 
         renderer.render(levelConfig.skyLayers);
+
+        afterRender();
 
         //ShapeRenderer for HUD Graphics
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -130,4 +133,7 @@ public abstract class Level implements Disposable, Screen {
     public void hide() {
 
     }
+
+    protected void beforeRender() {}
+    protected void afterRender() {}
 }
