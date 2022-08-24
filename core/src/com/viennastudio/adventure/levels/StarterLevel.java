@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.viennastudio.adventure.AdvenTUreGame;
+import com.viennastudio.adventure.entities.StaticMovingSprite;
 import com.viennastudio.adventure.level.Level;
 import com.viennastudio.adventure.level.LevelConfig;
 
@@ -14,11 +15,12 @@ public class StarterLevel extends Level {
 
     private Sprite[] tracks;
     private float currentX = 0;
+    private StaticMovingSprite staticMovingSprite;
     private static final LevelConfig levelConfig = new LevelConfig(
             new int[]{0, 1},
             new int[]{},
             1,
-            new Vector2(7, 1),
+            new Vector2(7, 2),
             "tiles/Ubahn.tmx"
     );
 
@@ -40,6 +42,9 @@ public class StarterLevel extends Level {
         }
 
         setTrackPosition();
+
+        staticMovingSprite = new StaticMovingSprite(new Sprite(new Texture(Gdx.files.internal("tiles/ubahn-assets/bridge.png"))), -16, 304, 30, -2);
+        staticMovingSprite.setSize(3, 10);
     }
 
     private void setTrackPosition() {
@@ -65,7 +70,9 @@ public class StarterLevel extends Level {
 
     @Override
     protected void afterRender() {
+        staticMovingSprite.update();
         game.batch.begin();
+        staticMovingSprite.draw(game.batch);
         game.batch.end();
     }
 }
