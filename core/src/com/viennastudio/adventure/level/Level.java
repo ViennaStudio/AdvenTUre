@@ -64,6 +64,7 @@ public abstract class Level implements Disposable, Screen {
 
         //PlayerHud Creation
         playerStatisticsHUD = new PlayerStatisticsHUD(game.player, game.font, spriteBatch, shapeRenderer);
+        afterShow();
     }
 
     @Override
@@ -134,6 +135,7 @@ public abstract class Level implements Disposable, Screen {
 
     }
 
+    protected void afterShow() {}
     protected void beforeRender() {}
     protected void afterRender() {}
 }

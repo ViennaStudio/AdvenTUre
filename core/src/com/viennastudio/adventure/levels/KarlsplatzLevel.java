@@ -1,12 +1,15 @@
 package com.viennastudio.adventure.levels;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.viennastudio.adventure.AdvenTUreGame;
+import com.viennastudio.adventure.hud.ChatBox;
 import com.viennastudio.adventure.level.Level;
 import com.viennastudio.adventure.level.LevelConfig;
 
 public class KarlsplatzLevel extends Level {
+    private ChatBox chatBox;
 
     public KarlsplatzLevel(AdvenTUreGame game) {
         super(game, new LevelConfig(
@@ -16,5 +19,19 @@ public class KarlsplatzLevel extends Level {
                 new Vector2(17, 11),
                 "tiles/Karlsplatz.tmx"
         ));
+    }
+
+    @Override
+    protected void afterShow() {
+        //ChatBox
+        String text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+        chatBox = new ChatBox(spriteBatch, game.font, "Julian", text);
+    }
+
+    @Override
+    protected void afterRender() {
+        spriteBatch.begin();
+        chatBox.draw(Gdx.graphics.getDeltaTime());
+        spriteBatch.end();
     }
 }
