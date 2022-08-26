@@ -63,7 +63,8 @@ public class ChatBox {
         GlyphLayout layoutText = new GlyphLayout(font, text.substring(startChar, currChar), Color.WHITE, chatBoxWidth - 20, Align.left, true);
         font.draw(batch, layoutText, startLetterX, yPosLetter);
 
-        if (layoutText.height > chatBoxHeight - 100f) { // Maybe The Player has to press Space to get to the next Site This has to be discussed!
+        if (layoutText.height > chatBoxHeight - 100f) {
+            // FIXME: Maybe The Player has to press Space to get to the next Site This has to be discussed!
             startChar = currChar - 1;
         }
     }
