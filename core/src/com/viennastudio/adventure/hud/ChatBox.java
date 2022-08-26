@@ -1,65 +1,73 @@
 package com.viennastudio.adventure.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.viennastudio.adventure.util.Timer;
 
 public class ChatBox {
-
-    private static final float timePerLetter = 1000000f;
-    private static int maxCharacters = 250; //Unsure about this one
-    private static int maxLines = 5;
     private static final Texture background = new Texture(Gdx.files.internal("HUD_Graphics/ChatboxBG.png"));
     private final String text;
-    private final char[] textArray;
     private final BitmapFont font;
     private final SpriteBatch batch;
     private final String npcName;
+    private final int maxCharsPerLine = 29;
+    private final float chatBoxX = 320f;
+    private final float chatBoxY = 20f;
+    private final float chatBoxWidth = 640f;
+    private final float chatBoxHeight = 240f;
+    private int currChar = 0;
+    private int lineCount = 0;
+    private int maxLines = 6;
+    private final GlyphLayout layout;
+    private final Timer timer;
+
 
     public ChatBox(SpriteBatch batch, BitmapFont font, String npcName, String text) {
         this.batch = batch;
         this.font = font;
         this.text = text;
-        textArray = text.toCharArray();
         this.npcName = npcName;
+        this.layout = new GlyphLayout(font, npcName);
+        timer = new Timer(200, false);
     }
 
-    public void draw() {
-        float chatBoxX = 320f;
-        float chatBoxY = 20f;
-        float chatboxWidth = 640f;
-        float chatboxHeight = 240f;
-        GlyphLayout layout = new GlyphLayout(font, npcName);
-        float npcNameX = chatBoxX + (chatboxWidth - layout.width) / 2;
-        float npcNameY = chatBoxY + chatboxHeight - 20f;
+    public void draw(float delta) {
+        float npcNameX = chatBoxX + (chatBoxWidth - layout.width) / 2;
+        float npcNameY = chatBoxY + chatBoxHeight - 20f;
 
         //Determine the number of lines needed to display the text
-        int linesNeeded = (int) Math.ceil(textArray.length / maxCharacters);
 
         //Draw background
         batch.draw(background, chatBoxX, chatBoxY);
         //Draw text
+        font.setColor(Color.BLUE);
         font.draw(batch, npcName, npcNameX, npcNameY);
 
         //Draw text letter after letter
-        long timeSinceLastLetter = 0;
-        float letterX = chatBoxX + 20f;
-        float letterY = chatBoxY + chatboxHeight - layout.height - 10f;
-        int currentLines = 0;
-        int currentChar = 0;
-        while (currentChar < textArray.length) {
-            if (TimeUtils.timeSinceMillis(timeSinceLastLetter) > timePerLetter) {
-                timeSinceLastLetter = 0;
-                    font.draw(batch, String.valueOf(textArray[currentChar]), letterX, letterY);
-                    letterX += 20;
-                    currentChar++;
-                } else {
-                    timeSinceLastLetter += Gdx.graphics.getDeltaTime();
-                }
-            }
+        drawLetters(delta);
+    }
+
+    public void drawLetters(float delta) {
+        final float startLetterX = chatBoxX + 20f;
+        float yPosLetter = chatBoxHeight - layout.height - 20f;
+
+        timer.start();
+        boolean b = timer.tick(delta);
+        if (b) {
+            currChar++;
         }
 
+        if (currChar % maxCharsPerLine == 0) {
+            lineCount++;
+            yPosLetter -= layout.height;
+        }
+
+        font.setColor(Color.WHITE);
+        font.draw(batch, text.substring(0, currChar), startLetterX, yPosLetter);
     }
+
+}
