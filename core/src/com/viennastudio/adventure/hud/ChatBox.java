@@ -31,6 +31,7 @@ public class ChatBox {
         this.npcName = npcName;
         this.layout = new GlyphLayout(font, npcName);
         timer = new Timer(75, false);
+        timer.start();
     }
 
     public void draw(float delta) {
@@ -53,15 +54,9 @@ public class ChatBox {
     public void drawLetters(float delta) {
         final float startLetterX = chatBoxX + 20f;
         float yPosLetter = chatBoxHeight - layout.height - 30f;
-        boolean maxCharsReached = false;
+        boolean maxCharsReached = currChar >= text.length();
 
-        if (currChar >= text.length()) {
-            maxCharsReached = true;
-        }
-
-        timer.start();
-        boolean b = timer.tick(delta);
-        if (b && !maxCharsReached) {
+        if (timer.tick(delta) && !maxCharsReached) {
             currChar++;
         }
 
