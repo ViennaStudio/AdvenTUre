@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Align;
 import com.viennastudio.adventure.util.Timer;
 
 public class ChatBox {
@@ -14,14 +15,11 @@ public class ChatBox {
     private final BitmapFont font;
     private final SpriteBatch batch;
     private final String npcName;
-    private final int maxCharsPerLine = 29;
     private final float chatBoxX = 320f;
-    private final float chatBoxY = 20f;
     private final float chatBoxWidth = 640f;
     private final float chatBoxHeight = 240f;
     private int currChar = 0;
-    private int lineCount = 0;
-    private int maxLines = 6;
+    private int startChar = 0;
     private final GlyphLayout layout;
     private final Timer timer;
 
@@ -32,11 +30,12 @@ public class ChatBox {
         this.text = text;
         this.npcName = npcName;
         this.layout = new GlyphLayout(font, npcName);
-        timer = new Timer(200, false);
+        timer = new Timer(75, false);
     }
 
     public void draw(float delta) {
         float npcNameX = chatBoxX + (chatBoxWidth - layout.width) / 2;
+        float chatBoxY = 20f;
         float npcNameY = chatBoxY + chatBoxHeight - 20f;
 
         //Determine the number of lines needed to display the text
@@ -53,21 +52,25 @@ public class ChatBox {
 
     public void drawLetters(float delta) {
         final float startLetterX = chatBoxX + 20f;
-        float yPosLetter = chatBoxHeight - layout.height - 20f;
+        float yPosLetter = chatBoxHeight - layout.height - 30f;
+        boolean maxCharsReached = false;
+
+        if (currChar >= text.length()) {
+            maxCharsReached = true;
+        }
 
         timer.start();
         boolean b = timer.tick(delta);
-        if (b) {
+        if (b && !maxCharsReached) {
             currChar++;
         }
 
-        if (currChar % maxCharsPerLine == 0) {
-            lineCount++;
-            yPosLetter -= layout.height;
-        }
+            GlyphLayout layoutText = new GlyphLayout(font, text.substring(startChar, currChar), Color.WHITE, chatBoxWidth - 20, Align.left, true);
+            font.draw(batch, layoutText, startLetterX, yPosLetter);
 
-        font.setColor(Color.WHITE);
-        font.draw(batch, text.substring(0, currChar), startLetterX, yPosLetter);
+            if (layoutText.height > chatBoxHeight - 100f) { // Maybe The Player has to press Space to get to the next Site This has to be discussed!
+                startChar = currChar - 1;
+            }
     }
 
 }
