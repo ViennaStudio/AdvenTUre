@@ -111,8 +111,8 @@ public class TiledScreen implements Screen {
         //PlayerHud Creation
         playerStatisticsHUD = new PlayerStatisticsHUD(player, game.font, spriteBatch, shapeRenderer);
         //ChatBox
-        String text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   \n";
-        chatBox = new ChatBox(spriteBatch, game.font, "Alrun", text);
+        String text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+        chatBox = new ChatBox(spriteBatch, game.font, "Julian", text);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class TiledScreen implements Screen {
         //Sprite Batch Rendering for HUD Text
         spriteBatch.begin();
         playerStatisticsHUD.drawHudText();
-        chatBox.draw();
+        chatBox.draw(delta);
         spriteBatch.end();
 
         Vector3 position = this.camera.position;
