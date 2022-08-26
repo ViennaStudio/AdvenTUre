@@ -2,7 +2,7 @@ package com.viennastudio.adventure;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.viennastudio.adventure.AdvenTUreGame;
+import com.viennastudio.adventure.util.Constants;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {

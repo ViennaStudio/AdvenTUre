@@ -10,7 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.viennastudio.adventure.Constants;
+import com.viennastudio.adventure.util.Constants;
 
 public class Player extends Sprite implements InputProcessor {
     private Vector2 velocity = new Vector2();
@@ -24,11 +24,9 @@ public class Player extends Sprite implements InputProcessor {
     private int mentalHealth = 100;
 
     public Player(
-            AnimationMap animationMap,
-            TiledMapTileLayer collisionLayer
+            AnimationMap animationMap
     ) {
         super(animationMap.getFirstFrame());
-        this.collisionLayer = collisionLayer;
         this.animationMap = animationMap;
     }
 
@@ -223,4 +221,11 @@ public class Player extends Sprite implements InputProcessor {
         this.mentalHealth = Math.min(Math.max(mentalHealth, 0), 100);
     }
 
+    public TiledMapTileLayer getCollisionLayer() {
+        return collisionLayer;
+    }
+
+    public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
+        this.collisionLayer = collisionLayer;
+    }
 }

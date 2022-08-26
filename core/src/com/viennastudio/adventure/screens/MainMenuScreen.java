@@ -1,4 +1,4 @@
-package com.viennastudio.adventure;
+package com.viennastudio.adventure.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.viennastudio.adventure.AdvenTUreGame;
+import com.viennastudio.adventure.levels.KarlsplatzLevel;
+import com.viennastudio.adventure.levels.StarterLevel;
 
 public class MainMenuScreen implements Screen {
 
@@ -37,7 +40,7 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                game.setScreen(new TiledScreen(game));
+                game.setScreen(new StarterLevel(game));
                 return true;
             }
 
@@ -47,7 +50,7 @@ public class MainMenuScreen implements Screen {
                     Gdx.app.exit();
                     return true;
                 }
-                game.setScreen(new TiledScreen(game));
+                game.setScreen(new KarlsplatzLevel(game));
                 return true;
             }
         });
