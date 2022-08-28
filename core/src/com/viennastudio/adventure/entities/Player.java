@@ -22,6 +22,7 @@ public class Player extends Sprite implements InputProcessor {
     public String name = "Alexander Budik";
     private int ECTS = 0;
     private int mentalHealth = 100;
+    private final int maxMentalHealth = 100;
 
     public Player(
             AnimationMap animationMap
@@ -227,5 +228,8 @@ public class Player extends Sprite implements InputProcessor {
 
     public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
         this.collisionLayer = collisionLayer;
+    }
+    public int getMaxMentalHealth() {
+        return maxMentalHealth;
     }
 }
