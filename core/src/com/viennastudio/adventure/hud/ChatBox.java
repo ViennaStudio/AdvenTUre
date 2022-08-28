@@ -1,6 +1,7 @@
 package com.viennastudio.adventure.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,6 +23,8 @@ public class ChatBox {
     private int startChar = 0;
     private final GlyphLayout layout;
     private final Timer timer;
+    private boolean paused = false;
+    private boolean finished = false;
 
 
     public ChatBox(SpriteBatch batch, BitmapFont font, String npcName, String text) {
@@ -30,8 +33,7 @@ public class ChatBox {
         this.text = text;
         this.npcName = npcName;
         this.layout = new GlyphLayout(font, npcName);
-        timer = new Timer(75, false);
-        timer.start();
+        timer = new Timer(60, true);
     }
 
     public void draw(float delta) {
@@ -39,34 +41,58 @@ public class ChatBox {
         float chatBoxY = 20f;
         float npcNameY = chatBoxY + chatBoxHeight - 20f;
 
-        //Determine the number of lines needed to display the text
+        if (currChar == text.length() && !finished) {
+            drawContinueMessage("Press SPACE to end!");
+        }
 
-        //Draw background
-        batch.draw(background, chatBoxX, chatBoxY);
-        //Draw text
-        font.setColor(Color.BLUE);
-        font.draw(batch, npcName, npcNameX, npcNameY);
+        if (currChar >= text.length() && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            finished = true;
+        }
 
-        //Draw text letter after letter
-        drawLetters(delta);
+        if (!finished) {
+            //Draw background
+            batch.draw(background, chatBoxX, chatBoxY);
+            //Draw text
+            font.setColor(Color.BLUE);
+            font.draw(batch, npcName, npcNameX, npcNameY);
+
+            //Draw text letter after letter
+            drawLetters(delta);
+        }
     }
 
-    public void drawLetters(float delta) {
+    private void drawLetters(float delta) {
         final float startLetterX = chatBoxX + 20f;
         float yPosLetter = chatBoxHeight - layout.height - 30f;
         boolean maxCharsReached = currChar >= text.length();
 
-        if (timer.tick(delta) && !maxCharsReached) {
+        if (paused) {
+            drawContinueMessage("Press SPACE to continue!");
+        }
+
+        if (paused && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            paused = false;
+            startChar = currChar;
+        }
+
+        if (timer.tick(delta) && !maxCharsReached && !paused) {
             currChar++;
         }
 
         GlyphLayout layoutText = new GlyphLayout(font, text.substring(startChar, currChar), Color.WHITE, chatBoxWidth - 20, Align.left, true);
         font.draw(batch, layoutText, startLetterX, yPosLetter);
 
-        if (layoutText.height > chatBoxHeight - 100f) {
-            // FIXME: Maybe The Player has to press Space to get to the next Site This has to be discussed!
-            startChar = currChar - 1;
+        if (layoutText.height > chatBoxHeight - 100f && !paused) {
+            paused = true;
         }
+    }
+
+    private void drawContinueMessage(String message) {
+        font.setColor(Color.WHITE);
+        font.getData().setScale(0.5f);
+        GlyphLayout layoutContinue = new GlyphLayout(font, message, Color.WHITE, chatBoxWidth, Align.center, false);
+        font.draw(batch, layoutContinue, chatBoxX, chatBoxHeight + 40f);
+        font.getData().setScale(1f);
     }
 
 }
