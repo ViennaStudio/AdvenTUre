@@ -8,10 +8,10 @@ import com.viennastudio.adventure.util.Constants;
 import com.viennastudio.adventure.entities.Player;
 
 public class PlayerStatisticsHUD {
-    private Player player;
-    private ShapeRenderer renderer;
-    private BitmapFont font;
-    private SpriteBatch spriteBatch;
+    private final Player player;
+    private final ShapeRenderer renderer;
+    private final BitmapFont font;
+    private final SpriteBatch spriteBatch;
 
     public PlayerStatisticsHUD(Player player, BitmapFont font, SpriteBatch spriteBatch, ShapeRenderer renderer) {
         this.player = player;
@@ -45,17 +45,20 @@ public class PlayerStatisticsHUD {
 
     private void drawMentalHealthBar() {
         int startingPos = 202;
+        float staticWidth = 200f;
+        float dynamicWidth = (float) player.getMentalHealth() / player.getMaxMentalHealth() * staticWidth;
+        float height = 30f;
         // Red Bar beneith the green
         this.renderer.setColor(Color.RED);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, 200, 30);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, staticWidth, height);
         // Green Bar
         this.renderer.setColor(Color.GREEN);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, player.getMentalHealth() * 2, 30);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, dynamicWidth, height);
         // Outline
         this.renderer.setColor(Color.WHITE);
         this.renderer.setAutoShapeType(true);
         this.renderer.set(ShapeRenderer.ShapeType.Line);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, 200, 30);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, staticWidth, height);
     }
 
 }
