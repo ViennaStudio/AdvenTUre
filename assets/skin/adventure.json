@@ -18,12 +18,13 @@
       a: 1
     }
   }
-//  com.viennastudio.adventure.hud.ChatBox: {
-//    default: {
-//      background: ChatboxBG
-//      font: Silkscreen
-//    }
-//  }
+  com.viennastudio.adventure.hud.ChatBox$ChatBoxStyle: {
+    default: {
+      background: ChatboxBG
+      fontColor: WHITE
+      font: Silkscreen
+    }
+  }
   ButtonStyle: {
     default: {
       up: button

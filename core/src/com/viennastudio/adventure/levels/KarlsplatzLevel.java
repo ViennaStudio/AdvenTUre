@@ -1,6 +1,5 @@
 package com.viennastudio.adventure.levels;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.viennastudio.adventure.AdvenTUreGame;
 import com.viennastudio.adventure.hud.ChatBox;
@@ -23,7 +22,7 @@ public class KarlsplatzLevel extends Level {
     protected void afterShow() {
         //ChatBox
         String text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
-        ChatBox chatBox = new ChatBox(game.font, "Julian", text);
+        ChatBox chatBox = new ChatBox(game.skin, "default","Julian", text);
         game.UIStage.addActor(chatBox);
     }
 }
