@@ -2,16 +2,19 @@ package com.viennastudio.adventure.hud;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Align;
 import com.viennastudio.adventure.util.Constants;
 import com.viennastudio.adventure.entities.Player;
 
 public class PlayerStatisticsHUD {
-    private Player player;
-    private ShapeRenderer renderer;
-    private BitmapFont font;
-    private SpriteBatch spriteBatch;
+    private final Player player;
+    private final ShapeRenderer renderer;
+    private final BitmapFont font;
+    private final SpriteBatch spriteBatch;
+    private final float staticWidth = 350f;
 
     public PlayerStatisticsHUD(Player player, BitmapFont font, SpriteBatch spriteBatch, ShapeRenderer renderer) {
         this.player = player;
@@ -32,30 +35,36 @@ public class PlayerStatisticsHUD {
     }
 
     private void drawTextHealthBar() {
+        float startingPosText = 7f;
+        float startingPosBarText = 205f;
         this.font.setColor(Color.WHITE);
-        this.font.draw(this.spriteBatch, "Mental Health: ", 5, Constants.WINDOW_HEIGHT - 10);
+        this.font.draw(this.spriteBatch, "Mental Health: ", startingPosText, Constants.WINDOW_HEIGHT - 10f);
         this.font.setColor(Color.BLACK);
-        this.font.draw(this.spriteBatch, Integer.toString(player.getMentalHealth()), 285, Constants.WINDOW_HEIGHT - 10);
+        GlyphLayout layout = new GlyphLayout(this.font, this.player.getMentalHealth() + "/" + this.player.getMaxMentalHealth(), Color.BLACK, staticWidth, Align.center, false);
+        this.font.draw(this.spriteBatch, layout, startingPosBarText, Constants.WINDOW_HEIGHT - 10f);
     }
 
     private void drawECTS() {
+        float startingPos = 205f + staticWidth;
+        GlyphLayout layout = new GlyphLayout(this.font, "ECTS: " + player.getECTS() + "/" + Constants.MAX_ECTS, Color.WHITE, Constants.WINDOW_WIDTH - startingPos, Align.center, false);
         this.font.setColor(Color.WHITE);
-        this.font.draw(this.spriteBatch, "ECTS: " + this.player.getECTS() + "/" + Constants.MAX_ECTS, 500, Constants.WINDOW_HEIGHT - 10);
+        this.font.draw(this.spriteBatch, layout, startingPos, Constants.WINDOW_HEIGHT - 10f);
     }
 
     private void drawMentalHealthBar() {
-        int startingPos = 202;
+        float startingPos = 205f;
+        float dynamicWidth = ((float) player.getMentalHealth() / player.getMaxMentalHealth() * staticWidth);
+        float height = 30f;
         // Red Bar beneith the green
         this.renderer.setColor(Color.RED);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, 200, 30);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - height, staticWidth, height);
         // Green Bar
         this.renderer.setColor(Color.GREEN);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, player.getMentalHealth() * 2, 30);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - height, dynamicWidth, height);
         // Outline
         this.renderer.setColor(Color.WHITE);
         this.renderer.setAutoShapeType(true);
         this.renderer.set(ShapeRenderer.ShapeType.Line);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, 200, 30);
+        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - height, staticWidth, height);
     }
-
 }

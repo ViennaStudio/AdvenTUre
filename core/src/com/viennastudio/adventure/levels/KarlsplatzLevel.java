@@ -1,6 +1,5 @@
 package com.viennastudio.adventure.levels;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.viennastudio.adventure.AdvenTUreGame;

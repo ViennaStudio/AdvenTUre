@@ -1,7 +1,7 @@
 package com.viennastudio.adventure.level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,47 +12,68 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.viennastudio.adventure.AdvenTUreGame;
 import com.viennastudio.adventure.util.Constants;
 import com.viennastudio.adventure.screens.MainMenuScreen;
 import com.viennastudio.adventure.hud.PlayerStatisticsHUD;
+import com.viennastudio.adventure.util.GameRelated;
+import com.viennastudio.adventure.util.KeyMap;
 
 import static com.viennastudio.adventure.util.Constants.WORLD_HEIGHT;
 import static com.viennastudio.adventure.util.Constants.WORLD_WIDTH;
+import static com.viennastudio.adventure.util.KeyMap.PAUSE_KEY;
 
-public abstract class Level implements Disposable, Screen {
+public abstract class Level extends GameRelated implements Disposable, Screen {
     protected TiledMap map;
     protected OrthogonalTiledMapRenderer renderer;
     protected ShapeRenderer shapeRenderer;
     protected OrthographicCamera camera;
-    protected Viewport viewport;
-    protected final AdvenTUreGame game;
     protected SpriteBatch spriteBatch;
     protected PlayerStatisticsHUD playerStatisticsHUD;
 
     protected final LevelConfig levelConfig;
 
     public Level(AdvenTUreGame game, LevelConfig levelConfig) {
-        this.game = game;
+        super(game);
         this.levelConfig = levelConfig;
+
+        camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
+        game.gameViewport = new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+        game.UIViewport = new ScreenViewport();
+
+        // game.gameStage = new Stage(game.gameViewport, game.batch);
+        // game.UIStage = new Stage(game.UIViewport, game.staticBatch);
+
+        game.gameStage = new Stage(game.gameViewport);
+        game.UIStage = new Stage(game.UIViewport);
+        Gdx.input.setInputProcessor(new InputMultiplexer(game.UIStage, game.gameStage));
     }
 
     @Override
     public void show() {
         map = new TmxMapLoader().load(levelConfig.mapFileName);
 
-        renderer = new OrthogonalTiledMapRenderer(map, 1f / Constants.TILE_SIZE, game.batch);
+        renderer = new OrthogonalTiledMapRenderer(map, 1f / Constants.TILE_SIZE, game.gameBatch);
+        game.gameStage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                return game.player.setDirectionKeyPress(KeyMap.directionForKey(keycode));
+            }
 
-        camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
-        viewport = new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+            @Override
+            public boolean keyUp(InputEvent event, int keycode) {
+                return game.player.unsetDirectionKeyPress(KeyMap.directionForKey(keycode));
+            }
+        });
+        game.gameStage.addActor(game.player);
 
         renderer.setView(camera);
 
         game.player.setCollisionLayer((TiledMapTileLayer) map.getLayers().get(levelConfig.collisionLayer));
-        Gdx.input.setInputProcessor(game.player);
 
         game.player.setSize(0.8f, 0.8f);
         game.player.setX(levelConfig.startCoordinates.x);
@@ -70,7 +91,7 @@ public abstract class Level implements Disposable, Screen {
     @Override
     public void render(float delta) {
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        game.gameBatch.setProjectionMatrix(camera.combined);
 
         Gdx.gl.glClearColor(.25f, .25f, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -80,10 +101,9 @@ public abstract class Level implements Disposable, Screen {
         renderer.setView(camera);
         renderer.render(levelConfig.floorLayers);
 
-        game.batch.begin();
-        game.batch.setProjectionMatrix(camera.combined);
-        game.player.draw(renderer.getBatch());
-        game.batch.end();
+        act(delta);
+
+        game.gameStage.draw();
 
         renderer.render(levelConfig.skyLayers);
 
@@ -99,23 +119,20 @@ public abstract class Level implements Disposable, Screen {
         playerStatisticsHUD.drawHudText();
         spriteBatch.end();
 
+        game.UIStage.draw();
+
         Vector3 position = this.camera.position;
         position.x += (game.player.getX() - position.x) * Constants.CAMERA_SPEED * delta;
         position.y += (game.player.getY() - position.y) * Constants.CAMERA_SPEED * delta;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+        if (Gdx.input.isKeyPressed(PAUSE_KEY)) {
             game.setScreen(new MainMenuScreen(game));
         }
     }
 
     @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-    }
-
-
-    @Override
     public void dispose() {
+        super.dispose();
         map.dispose();
         renderer.dispose();
     }
