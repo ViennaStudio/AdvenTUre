@@ -14,6 +14,7 @@ public class PlayerStatisticsHUD {
     private final ShapeRenderer renderer;
     private final BitmapFont font;
     private final SpriteBatch spriteBatch;
+    private final float staticWidth = 350f;
 
     public PlayerStatisticsHUD(Player player, BitmapFont font, SpriteBatch spriteBatch, ShapeRenderer renderer) {
         this.player = player;
@@ -37,14 +38,14 @@ public class PlayerStatisticsHUD {
         float startingPosText = 7f;
         float startingPosBarText = 205f;
         this.font.setColor(Color.WHITE);
-        this.font.draw(this.spriteBatch, "Mental Health: ", startingPosText, Constants.WINDOW_HEIGHT - 10);
+        this.font.draw(this.spriteBatch, "Mental Health: ", startingPosText, Constants.WINDOW_HEIGHT - 10f);
         this.font.setColor(Color.BLACK);
-        GlyphLayout layout = new GlyphLayout(this.font, this.player.getMentalHealth() + "/" + this.player.getMaxMentalHealth(), Color.BLACK, 400f, Align.center, false);
-        this.font.draw(this.spriteBatch, layout, startingPosBarText, Constants.WINDOW_HEIGHT - 10);
+        GlyphLayout layout = new GlyphLayout(this.font, this.player.getMentalHealth() + "/" + this.player.getMaxMentalHealth(), Color.BLACK, staticWidth, Align.center, false);
+        this.font.draw(this.spriteBatch, layout, startingPosBarText, Constants.WINDOW_HEIGHT - 10f);
     }
 
     private void drawECTS() {
-        float startingPos = 605f;
+        float startingPos = 205f + staticWidth;
         GlyphLayout layout = new GlyphLayout(this.font, "ECTS: " + player.getECTS() + "/" + Constants.MAX_ECTS, Color.WHITE, Constants.WINDOW_WIDTH - startingPos, Align.center, false);
         this.font.setColor(Color.WHITE);
         this.font.draw(this.spriteBatch, layout, startingPos, Constants.WINDOW_HEIGHT - 10f);
@@ -52,7 +53,6 @@ public class PlayerStatisticsHUD {
 
     private void drawMentalHealthBar() {
         float startingPos = 205f;
-        float staticWidth = 400f;
         float dynamicWidth = ((float) player.getMentalHealth() / player.getMaxMentalHealth() * staticWidth);
         float height = 30f;
         // Red Bar beneith the green
