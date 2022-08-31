@@ -4,17 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import com.viennastudio.adventure.util.Timer;
 
-public class ChatBox {
+public class ChatBox extends Actor {
     private static final Texture background = new Texture(Gdx.files.internal("skin/HUD/ChatboxBG.png"));
     private final String text;
     private final BitmapFont font;
-    private final SpriteBatch batch;
     private final String npcName;
     private final float chatBoxX = 320f;
     private final float chatBoxWidth = 640f;
@@ -27,8 +28,7 @@ public class ChatBox {
     private boolean finished = false;
 
 
-    public ChatBox(SpriteBatch batch, BitmapFont font, String npcName, String text) {
-        this.batch = batch;
+    public ChatBox(BitmapFont font, String npcName, String text) {
         this.font = font;
         this.text = text;
         this.npcName = npcName;
@@ -36,13 +36,14 @@ public class ChatBox {
         timer = new Timer(60, true);
     }
 
-    public void draw(float delta) {
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
         float npcNameX = chatBoxX + (chatBoxWidth - layout.width) / 2;
         float chatBoxY = 20f;
         float npcNameY = chatBoxY + chatBoxHeight - 20f;
 
         if (currChar == text.length() && !finished) {
-            drawContinueMessage("Press SPACE to end!");
+            drawContinueMessage(batch, "Press SPACE to end!");
         }
 
         if (currChar >= text.length() && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -52,22 +53,23 @@ public class ChatBox {
         if (!finished) {
             //Draw background
             batch.draw(background, chatBoxX, chatBoxY);
+
             //Draw text
             font.setColor(Color.BLUE);
             font.draw(batch, npcName, npcNameX, npcNameY);
 
             //Draw text letter after letter
-            drawLetters(delta);
+            drawLetters(batch, Gdx.graphics.getDeltaTime());
         }
     }
 
-    private void drawLetters(float delta) {
+    private void drawLetters(Batch batch, float delta) {
         final float startLetterX = chatBoxX + 20f;
         float yPosLetter = chatBoxHeight - layout.height - 30f;
         boolean maxCharsReached = currChar >= text.length();
 
         if (paused) {
-            drawContinueMessage("Press SPACE to continue!");
+            drawContinueMessage(batch,"Press SPACE to continue!");
         }
 
         if (paused && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -87,7 +89,7 @@ public class ChatBox {
         }
     }
 
-    private void drawContinueMessage(String message) {
+    private void drawContinueMessage(Batch batch, String message) {
         font.setColor(Color.WHITE);
         font.getData().setScale(0.5f);
         GlyphLayout layoutContinue = new GlyphLayout(font, message, Color.WHITE, chatBoxWidth, Align.center, false);
