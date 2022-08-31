@@ -44,10 +44,10 @@ public class PlayerStatisticsHUD {
     }
 
     private void drawMentalHealthBar() {
-        int startingPos = 202;
-        float staticWidth = 200f;
-        float dynamicWidth = (float) player.getMentalHealth() / player.getMaxMentalHealth() * staticWidth;
-        float height = 30f;
+        float startingPos = 202f;
+        float staticWidth = 400f;
+        float dynamicWidth = ((float) player.getMentalHealth() / player.getMaxMentalHealth() * staticWidth);
+        float height = 60f;
         // Red Bar beneith the green
         this.renderer.setColor(Color.RED);
         this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, staticWidth, height);
@@ -60,5 +60,4 @@ public class PlayerStatisticsHUD {
         this.renderer.set(ShapeRenderer.ShapeType.Line);
         this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - 30, staticWidth, height);
     }
-
 }
