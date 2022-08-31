@@ -47,6 +47,14 @@ public class Player extends Sprite implements InputProcessor {
     }
 
     private void update(float deltaTime) {
+        //Clamp Health
+        if (mentalHealth <= 0) {
+            mentalHealth = 0;
+            // TODO: Game Over Screen
+        } else if (mentalHealth >= maxMentalHealth) {
+            mentalHealth = maxMentalHealth;
+        }
+
         // clamp velocity
         if (velocity.y > MAX_SPEED) velocity.y = MAX_SPEED;
         else if (velocity.y < -MAX_SPEED) velocity.y = -MAX_SPEED;
@@ -144,6 +152,7 @@ public class Player extends Sprite implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.W:
+                this.mentalHealth -= 2;
                 velocity.y = MAX_SPEED;
                 animationTime = 0;
                 break;
