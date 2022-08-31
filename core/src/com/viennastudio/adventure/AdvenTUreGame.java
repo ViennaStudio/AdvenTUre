@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.viennastudio.adventure.entities.AnimationMap;
 import com.viennastudio.adventure.entities.Player;
@@ -26,6 +27,7 @@ public class AdvenTUreGame extends Game {
     public Viewport gameViewport;
     public Viewport UIViewport;
 
+    public Skin skin;
     public BitmapFont font;
     public Player player;
 
@@ -47,6 +49,8 @@ public class AdvenTUreGame extends Game {
         Gdx.input.setInputProcessor(multiplexer);
 
         font = new BitmapFont(Gdx.files.internal("fonts/Silkscreen.fnt")); // use Silkscreen.fnt for the font
+
+        skin = new Skin(Gdx.files.internal("skin/adventure.json"));
 
         playerStillTexture = new Texture("player/PlayerStill.png");
         playerDownTexture = new Texture("player/PlayerDown.png");

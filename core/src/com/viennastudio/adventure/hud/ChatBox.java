@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Align;
 import com.viennastudio.adventure.util.Timer;
 
 public class ChatBox {
-    private static final Texture background = new Texture(Gdx.files.internal("HUD_Graphics/ChatboxBG.png"));
+    private static final Texture background = new Texture(Gdx.files.internal("skin/HUD/ChatboxBG.png"));
     private final String text;
     private final BitmapFont font;
     private final SpriteBatch batch;
