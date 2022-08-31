@@ -152,7 +152,6 @@ public class Player extends Sprite implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.W:
-                this.mentalHealth -= 2;
                 velocity.y = MAX_SPEED;
                 animationTime = 0;
                 break;
