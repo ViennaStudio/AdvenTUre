@@ -1,15 +1,14 @@
 package com.viennastudio.adventure.hud;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
+import com.viennastudio.adventure.util.KeyMap;
 import com.viennastudio.adventure.util.Timer;
 
 public class ChatBox extends Actor {
@@ -46,7 +45,7 @@ public class ChatBox extends Actor {
             drawContinueMessage(batch, "Press SPACE to end!");
         }
 
-        if (currChar >= text.length() && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (currChar >= text.length() && Gdx.input.isKeyPressed(KeyMap.CONTINUE_CHATBOX_KEY)) {
             finished = true;
         }
 
@@ -72,7 +71,7 @@ public class ChatBox extends Actor {
             drawContinueMessage(batch,"Press SPACE to continue!");
         }
 
-        if (paused && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (paused && Gdx.input.isKeyPressed(KeyMap.CONTINUE_CHATBOX_KEY)) {
             paused = false;
             startChar = currChar;
         }
