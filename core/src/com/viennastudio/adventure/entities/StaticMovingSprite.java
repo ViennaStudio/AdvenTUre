@@ -20,6 +20,5 @@ public class StaticMovingSprite extends Sprite {
         float x = getX();
         x -= TRAIN_SPEED * Gdx.graphics.getDeltaTime();
         setX(x < minX ? maxX : x);
-        System.out.println("getX() = " + getX());
     }
 }
