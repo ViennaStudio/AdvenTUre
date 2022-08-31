@@ -57,7 +57,7 @@ public abstract class Level extends GameRelated implements Disposable, Screen {
     public void show() {
         map = new TmxMapLoader().load(levelConfig.mapFileName);
 
-        renderer = new OrthogonalTiledMapRenderer(map, 1f / Constants.TILE_SIZE, game.batch);
+        renderer = new OrthogonalTiledMapRenderer(map, 1f / Constants.TILE_SIZE, game.gameBatch);
         game.gameStage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -90,7 +90,7 @@ public abstract class Level extends GameRelated implements Disposable, Screen {
     @Override
     public void render(float delta) {
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        game.gameBatch.setProjectionMatrix(camera.combined);
 
         Gdx.gl.glClearColor(.25f, .25f, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

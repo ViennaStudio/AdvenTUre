@@ -60,19 +60,19 @@ public class StarterLevel extends Level {
 
     @Override
     protected void beforeRender() {
-        game.batch.begin();
+        game.gameBatch.begin();
         for (Sprite track : tracks) {
-            track.draw(game.batch);
+            track.draw(game.gameBatch);
         }
-        game.batch.end();
+        game.gameBatch.end();
         setTrackPosition();
     }
 
     @Override
     protected void afterRender() {
         staticMovingSprite.update();
-        game.batch.begin();
-        staticMovingSprite.draw(game.batch);
-        game.batch.end();
+        game.gameBatch.begin();
+        staticMovingSprite.draw(game.gameBatch);
+        game.gameBatch.end();
     }
 }

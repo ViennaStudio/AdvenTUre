@@ -19,8 +19,8 @@ import com.viennastudio.adventure.util.AnimationLoader;
 
 public class AdvenTUreGame extends Game {
 
-    public SpriteBatch batch;
-    public SpriteBatch staticBatch;
+    public SpriteBatch gameBatch;
+    public SpriteBatch UIBatch;
     public Stage gameStage;
     public Stage UIStage;
     public Viewport gameViewport;
@@ -36,8 +36,8 @@ public class AdvenTUreGame extends Game {
     private Texture playerRightTexture;
 
     public void create() {
-        batch = new SpriteBatch();
-        staticBatch = new SpriteBatch();
+        gameBatch = new SpriteBatch();
+        UIBatch = new SpriteBatch();
         gameStage = new Stage();
         UIStage = new Stage();
 
@@ -83,8 +83,8 @@ public class AdvenTUreGame extends Game {
         playerRightTexture.dispose();
         playerUpTexture.dispose();
         playerDownTexture.dispose();
-        if (batch != null) batch.dispose();
-        if (staticBatch != null) staticBatch.dispose();
+        if (gameBatch != null) gameBatch.dispose();
+        if (UIBatch != null) UIBatch.dispose();
         font.dispose();
     }
 }

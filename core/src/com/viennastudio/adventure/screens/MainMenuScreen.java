@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.viennastudio.adventure.AdvenTUreGame;
 import com.viennastudio.adventure.levels.KarlsplatzLevel;
 import com.viennastudio.adventure.levels.StarterLevel;
-import com.viennastudio.adventure.util.Constants;
 import com.viennastudio.adventure.util.GameRelated;
 
 import static com.viennastudio.adventure.util.KeyMap.PAUSE_KEY;
@@ -110,7 +109,7 @@ public class MainMenuScreen extends GameRelated implements Screen {
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
         camera.update();
-        game.staticBatch.setProjectionMatrix(camera.combined);
+        game.UIBatch.setProjectionMatrix(camera.combined);
 
         draw();
     }
