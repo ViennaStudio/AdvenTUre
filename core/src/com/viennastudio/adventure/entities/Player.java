@@ -25,6 +25,7 @@ public class Player extends Actor {
     public String name = "Alexander Budik";
     private int ECTS = 0;
     private int mentalHealth = 100;
+    private final int maxMentalHealth = 100;
 
     public boolean setDirectionKeyPress(Constants.DIRECTION direction) {
         switch (direction) {
@@ -99,6 +100,10 @@ public class Player extends Actor {
     @Override
     public void act(float deltaTime) {
         super.act(deltaTime);
+
+        //Clamp Health
+        this.mentalHealth = Math.max(0, Math.min(this.mentalHealth, this.maxMentalHealth));
+
         // clamp velocity
         if (velocity.y > MAX_SPEED) velocity.y = MAX_SPEED;
         else if (velocity.y < -MAX_SPEED) velocity.y = -MAX_SPEED;
@@ -216,5 +221,8 @@ public class Player extends Actor {
 
     public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
         this.collisionLayer = collisionLayer;
+    }
+    public int getMaxMentalHealth() {
+        return maxMentalHealth;
     }
 }
