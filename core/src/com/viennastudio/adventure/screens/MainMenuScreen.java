@@ -1,52 +1,99 @@
 package com.viennastudio.adventure.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.viennastudio.adventure.AdvenTUreGame;
 import com.viennastudio.adventure.levels.KarlsplatzLevel;
 import com.viennastudio.adventure.levels.StarterLevel;
+import com.viennastudio.adventure.util.GameRelated;
 
-public class MainMenuScreen implements Screen {
+import static com.viennastudio.adventure.util.KeyMap.PAUSE_KEY;
 
-    final AdvenTUreGame game;
 
+public class MainMenuScreen extends GameRelated implements Screen {
     OrthographicCamera camera;
 
     Texture logo;
 
-    private Viewport viewport;
-
     public MainMenuScreen(final AdvenTUreGame game) {
-        this.game = game;
+        super(game);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         logo = new Texture(Gdx.files.internal("AdvenTUre.png"));
-        System.out.println("logo.getHeight() = " + logo.getHeight());
-        System.out.println("logo.getWidth() = " + logo.getWidth());
 
-        viewport = new ScreenViewport(camera);
+        game.gameViewport = new ScreenViewport(camera);
+        game.UIViewport = new ScreenViewport(camera);
+
+        game.gameStage = new Stage(game.gameViewport);
+        game.UIStage = new Stage(game.UIViewport);
+
+        Gdx.input.setInputProcessor(new InputMultiplexer(game.UIStage, game.gameStage));
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new InputAdapter() {
+        Skin orangeButton = new Skin(Gdx.files.internal("skin/orange-button.json"));
+
+        final Button exitButton = new TextButton("* Exit", orangeButton, "default");
+        exitButton.setSize(300, 60);
+        exitButton.setPosition(Gdx.graphics.getWidth() /2f - 10, 200, Align.bottomRight);
+        exitButton.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                game.setScreen(new StarterLevel(game));
-                return true;
+            public void clicked(InputEvent event, float x, float y) {
+                if (event.getTarget().isDescendantOf(exitButton)) Gdx.app.exit();
             }
+        });
+        game.UIStage.addActor(exitButton);
+
+        final Button playButton = new TextButton("Play >", orangeButton, "default");
+        playButton.setOrigin(Align.center);
+        playButton.setSize(
+                300,
+                60
+        );
+        playButton.setPosition(Gdx.graphics.getWidth() / 2f + 10, 200);
+        playButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (event.getTarget().isDescendantOf(playButton)) game.setScreen(new StarterLevel(game));
+            }
+        });
+        game.UIStage.addActor(playButton);
+
+        Image image = new Image(logo);
+        image.setSize(450, 300);
+        image.setPosition(
+                Gdx.graphics.getWidth() / 2f,
+                Gdx.graphics.getHeight() * 3 / 4f,
+                Align.center
+        );
+        game.UIStage.addActor(image);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(game.font, Color.WHITE);
+        final Label label = new Label("Welcome to AdvenTUre game!!!\nTap anywhere to begin", labelStyle);
+        label.setAlignment(Align.center);
+        label.setPosition(Gdx.graphics.getWidth() / 2f, 350, Align.center);
+        game.UIStage.addActor(label);
+
+
+        game.UIStage.addListener(new InputListener() {
 
             @Override
-            public boolean keyDown(int keycode) {
-                if (keycode == Input.Keys.ESCAPE) {
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == PAUSE_KEY) {
                     Gdx.app.exit();
                     return true;
                 }
@@ -58,21 +105,13 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        act(delta);
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        game.UIBatch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
-        game.font.draw(game.batch, "Welcome to AdvenTUre game!!! ", 100, 150);
-        game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
-        game.batch.draw(logo, 175, 200, 450, 300);
-        game.batch.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
+        draw();
     }
 
     @Override
@@ -87,10 +126,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void hide() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void dispose() {
+//        Gdx.input.setInputProcessor(null);
     }
 }
