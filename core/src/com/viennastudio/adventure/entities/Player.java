@@ -48,12 +48,7 @@ public class Player extends Sprite implements InputProcessor {
 
     private void update(float deltaTime) {
         //Clamp Health
-        if (mentalHealth <= 0) {
-            mentalHealth = 0;
-            // TODO: Game Over Screen
-        } else if (mentalHealth >= maxMentalHealth) {
-            mentalHealth = maxMentalHealth;
-        }
+        this.mentalHealth = Math.max(0, Math.min(this.mentalHealth, this.maxMentalHealth));
 
         // clamp velocity
         if (velocity.y > MAX_SPEED) velocity.y = MAX_SPEED;
