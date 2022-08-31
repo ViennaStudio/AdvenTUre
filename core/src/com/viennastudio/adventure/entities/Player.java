@@ -22,6 +22,7 @@ public class Player extends Sprite implements InputProcessor {
     public String name = "Alexander Budik";
     private int ECTS = 0;
     private int mentalHealth = 100;
+    private final int maxMentalHealth = 100;
 
     public Player(
             AnimationMap animationMap
@@ -46,6 +47,9 @@ public class Player extends Sprite implements InputProcessor {
     }
 
     private void update(float deltaTime) {
+        //Clamp Health
+        this.mentalHealth = Math.max(0, Math.min(this.mentalHealth, this.maxMentalHealth));
+
         // clamp velocity
         if (velocity.y > MAX_SPEED) velocity.y = MAX_SPEED;
         else if (velocity.y < -MAX_SPEED) velocity.y = -MAX_SPEED;
@@ -227,5 +231,8 @@ public class Player extends Sprite implements InputProcessor {
 
     public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
         this.collisionLayer = collisionLayer;
+    }
+    public int getMaxMentalHealth() {
+        return maxMentalHealth;
     }
 }
