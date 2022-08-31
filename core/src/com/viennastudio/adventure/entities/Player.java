@@ -1,8 +1,7 @@
 package com.viennastudio.adventure.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -10,29 +9,76 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.viennastudio.adventure.util.Constants;
 
-public class Player extends Sprite implements InputProcessor {
-    private Vector2 velocity = new Vector2();
+public class Player extends Actor {
+    private final Sprite sprite;
+    private final Vector2 velocity = new Vector2();
     private static final float MAX_SPEED = Constants.PLAYER_SPEED;
-    private float increment, animationTime = 0;
-    private AnimationMap animationMap;
+    private float increment = 0;
+    private final AnimationMap animationMap;
     private TiledMapTileLayer collisionLayer;
-    private final String blockedKey = "blocked";
     public String name = "Alexander Budik";
     private int ECTS = 0;
     private int mentalHealth = 100;
 
+    public boolean setDirectionKeyPress(Constants.DIRECTION direction) {
+        switch (direction) {
+            case UP:
+                velocity.y = MAX_SPEED;
+                break;
+            case DOWN:
+                velocity.y = -MAX_SPEED;
+                break;
+            case LEFT:
+                velocity.x = -MAX_SPEED;
+                break;
+            case RIGHT:
+                velocity.x = MAX_SPEED;
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    public boolean unsetDirectionKeyPress(Constants.DIRECTION direction) {
+        switch (direction) {
+            case LEFT:
+            case RIGHT:
+                velocity.x = 0;
+                return true;
+            case UP:
+            case DOWN:
+                velocity.y = 0;
+                return true;
+        }
+        return false;
+    }
+
     public Player(
             AnimationMap animationMap
     ) {
-        super(animationMap.getFirstFrame());
+        sprite = new Sprite(animationMap.getFirstFrame());
         this.animationMap = animationMap;
+        setTouchable(Touchable.enabled);
+        addListener(new InputListener() {
+            @Override
+            public boolean keyTyped(InputEvent event, char character) {
+                System.out.println("character = " + character);
+                return true;
+            }
+        });
     }
 
     @Override
-    public void draw(Batch batch) {
-        update(Gdx.graphics.getDeltaTime());
+    public void draw(Batch batch, float parentAlpha) {
+        Color color = getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
         batch.draw(
                 animationMap.getFrame(
                         Gdx.graphics.getDeltaTime(),
@@ -40,12 +86,19 @@ public class Player extends Sprite implements InputProcessor {
                 ),
                 getX(),
                 getY(),
+                getOriginX(),
+                getOriginY(),
                 getWidth(),
-                getHeight()
+                getHeight(),
+                getScaleX(),
+                getScaleY(),
+                getRotation()
         );
     }
 
-    private void update(float deltaTime) {
+    @Override
+    public void act(float deltaTime) {
+        super.act(deltaTime);
         // clamp velocity
         if (velocity.y > MAX_SPEED) velocity.y = MAX_SPEED;
         else if (velocity.y < -MAX_SPEED) velocity.y = -MAX_SPEED;
@@ -107,7 +160,9 @@ public class Player extends Sprite implements InputProcessor {
             rectangle.width /= collisionLayer.getTileWidth();
             rectangle.height /= collisionLayer.getTileHeight();
 
-            if (Intersector.overlaps(rectangle, this.getBoundingRectangle())) {
+            Rectangle hitbox = new Rectangle(getX(), getY(), getWidth(), getHeight());
+
+            if (Intersector.overlaps(rectangle, hitbox)) {
                 return true;
             }
         }
@@ -139,74 +194,6 @@ public class Player extends Sprite implements InputProcessor {
         return false;
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        switch (keycode) {
-            case Input.Keys.W:
-                velocity.y = MAX_SPEED;
-                animationTime = 0;
-                break;
-            case Input.Keys.S:
-                velocity.y = -MAX_SPEED;
-                animationTime = 0;
-                break;
-            case Input.Keys.A:
-                velocity.x = -MAX_SPEED;
-                animationTime = 0;
-                break;
-            case Input.Keys.D:
-                velocity.x = MAX_SPEED;
-                animationTime = 0;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        switch (keycode) {
-            case Input.Keys.A:
-            case Input.Keys.D:
-                velocity.x = 0;
-                animationTime = 0;
-                break;
-            case Input.Keys.W:
-            case Input.Keys.S:
-                velocity.y = 0;
-                animationTime = 0;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        return false;
-    }
-
     public int getECTS() {
         return ECTS;
     }
@@ -214,9 +201,11 @@ public class Player extends Sprite implements InputProcessor {
     public void setECTS(int ECTS) {
         this.ECTS = ECTS;
     }
+
     public int getMentalHealth() {
         return mentalHealth;
     }
+
     public void setMentalHealth(int mentalHealth) {
         this.mentalHealth = Math.min(Math.max(mentalHealth, 0), 100);
     }
