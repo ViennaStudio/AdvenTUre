@@ -5,25 +5,25 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Null;
 import com.viennastudio.adventure.util.KeyMap;
 import com.viennastudio.adventure.util.Timer;
 
-public class ChatBox extends Actor {
+public class ChatBox extends Group {
     private final ChatBoxStyle style;
     private final String text;
-    private final String npcName;
-    private final float chatBoxX = 320f;
-    private final float chatBoxWidth = 640f;
-    private final float chatBoxHeight = 240f;
     private int currChar = 0;
     private int startChar = 0;
-    private final GlyphLayout layout;
+    private int lastWhiteSpace = 0;
+    private final Label messageLabel;
+    private final Label continueLabel;
+    private final float MAX_MSG_HEIGHT;
     private final Timer timer;
     private boolean paused = false;
     private boolean finished = false;
@@ -32,89 +32,101 @@ public class ChatBox extends Actor {
     public ChatBox(Skin skin, String styleName, String npcName, String text) {
         this.style = skin.get(styleName, ChatBoxStyle.class);
         this.text = text;
-        this.npcName = npcName;
-        this.layout = new GlyphLayout(style.font, npcName);
         timer = new Timer(60, true);
+
+        setBounds(320, 0, 640, 240);
+
+        Image image = new Image(skin, "ChatboxBG");
+        Label npcLabel = new Label(npcName, skin, "ACCENT_2_LIGHT");
+        npcLabel.setPosition(getWidth() / 2f, getHeight() - style.borderWidth, Align.center | Align.top);
+
+        messageLabel = new Label("", skin);
+        messageLabel.setPosition(style.borderWidth, 1.5f * style.borderWidth, Align.left);
+        messageLabel.setWidth(getWidth() - 2 * style.borderWidth);
+        messageLabel.setHeight(getHeight() - 3 * style.borderWidth - npcLabel.getHeight());
+        messageLabel.setWrap(true);
+
+        continueLabel = new Label("", skin, "default");
+        continueLabel.setFontScale(0.5f);
+        // Set width to width of new width with small text
+        continueLabel.setWidth(continueLabel.getPrefWidth());
+        continueLabel.setPosition(getWidth() / 2f, getHeight() + style.borderWidth, Align.center);
+        addActor(image);
+        addActor(npcLabel);
+        addActor(messageLabel);
+        addActor(continueLabel);
+
+        MAX_MSG_HEIGHT = getHeight() - 3 * style.borderWidth - npcLabel.getHeight();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        float npcNameX = chatBoxX + (chatBoxWidth - layout.width) / 2;
-        float chatBoxY = 20f;
-        float npcNameY = chatBoxY + chatBoxHeight - 20f;
+        super.draw(batch, parentAlpha);
 
         if (currChar == text.length() && !finished) {
-            drawContinueMessage(batch, "Press SPACE to end!");
+            drawContinueMessage("Press SPACE to end!");
         }
 
         if (currChar >= text.length() && Gdx.input.isKeyPressed(KeyMap.CONTINUE_CHATBOX_KEY)) {
             finished = true;
+            remove();
         }
 
         if (!finished) {
-            //Draw background
-            style.background.draw(batch, chatBoxX, chatBoxY, chatBoxWidth, chatBoxHeight);
-
-            //Draw text
-            style.font.setColor(Color.BLUE);
-            style.font.draw(batch, npcName, npcNameX, npcNameY);
-
-            //Draw text letter after letter
-            drawLetters(batch, Gdx.graphics.getDeltaTime());
+            drawLetters(Gdx.graphics.getDeltaTime());
         }
     }
 
-    private void drawLetters(Batch batch, float delta) {
-        final float startLetterX = chatBoxX + 20f;
-        float yPosLetter = chatBoxHeight - layout.height - 30f;
+    private void drawLetters(float delta) {
         boolean maxCharsReached = currChar >= text.length();
 
         if (paused) {
-            drawContinueMessage(batch, "Press SPACE to continue!");
-        }
+            drawContinueMessage("Press SPACE to continue!");
 
-        if (paused && Gdx.input.isKeyPressed(KeyMap.CONTINUE_CHATBOX_KEY)) {
-            paused = false;
-            startChar = currChar;
+            if (Gdx.input.isKeyPressed(KeyMap.CONTINUE_CHATBOX_KEY)) {
+                paused = false;
+                continueLabel.setText("");
+                startChar = currChar;
+            }
         }
 
         if (timer.tick(delta) && !maxCharsReached && !paused) {
+            if (Character.isWhitespace(text.charAt(currChar))) lastWhiteSpace = currChar;
+            messageLabel.setText(text.substring(startChar, currChar));
             currChar++;
         }
 
-        GlyphLayout layoutText = new GlyphLayout(style.font, text.substring(startChar, currChar), Color.WHITE, chatBoxWidth - 20, Align.left, true);
-        style.font.draw(batch, layoutText, startLetterX, yPosLetter);
-
-        if (layoutText.height > chatBoxHeight - 100f && !paused) {
+        if (messageLabel.getGlyphLayout().height > MAX_MSG_HEIGHT) {
+            // remove last added char
+            currChar = lastWhiteSpace;
+            messageLabel.setText(text.substring(startChar, ++currChar));
             paused = true;
         }
     }
 
-    private void drawContinueMessage(Batch batch, String message) {
-        style.font.setColor(Color.WHITE);
-        style.font.getData().setScale(0.5f);
-        GlyphLayout layoutContinue = new GlyphLayout(style.font, message, Color.WHITE, chatBoxWidth, Align.center, false);
-        style.font.draw(batch, layoutContinue, chatBoxX, chatBoxHeight + 40f);
-        style.font.getData().setScale(1f);
+    private void drawContinueMessage(String message) {
+        continueLabel.setText(message);
+        // Set width to width of new width with small text
+        continueLabel.setWidth(continueLabel.getPrefWidth());
+        continueLabel.setPosition(getWidth() / 2f, getHeight() + style.borderWidth, Align.center);
     }
 
     static public class ChatBoxStyle {
         public BitmapFont font;
-        public @Null Color fontColor;
         public Drawable background;
+        public float borderWidth;
 
         public ChatBoxStyle() {
         }
 
-        public ChatBoxStyle(BitmapFont font, @Null Color fontColor, Drawable background) {
+        public ChatBoxStyle(BitmapFont font, Drawable background, float borderWidth) {
             this.font = font;
-            this.fontColor = fontColor;
             this.background = background;
+            this.borderWidth = borderWidth;
         }
 
         public ChatBoxStyle(Label.LabelStyle style) {
             font = style.font;
-            if (style.fontColor != null) fontColor = new Color(style.fontColor);
             background = style.background;
         }
     }
