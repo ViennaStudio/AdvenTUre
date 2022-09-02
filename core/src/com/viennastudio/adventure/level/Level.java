@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -32,6 +33,7 @@ public abstract class Level extends GameRelated implements Disposable, Screen {
     protected OrthogonalTiledMapRenderer renderer;
     protected ShapeRenderer shapeRenderer;
     protected OrthographicCamera camera;
+    protected OrthographicCamera UICamera;
     protected SpriteBatch spriteBatch;
     protected PlayerStatisticsHUD playerStatisticsHUD;
 
@@ -42,11 +44,9 @@ public abstract class Level extends GameRelated implements Disposable, Screen {
         this.levelConfig = levelConfig;
 
         camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
+        UICamera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         game.gameViewport = new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-        game.UIViewport = new ScreenViewport();
-
-        // game.gameStage = new Stage(game.gameViewport, game.batch);
-        // game.UIStage = new Stage(game.UIViewport, game.staticBatch);
+        game.UIViewport = new ScreenViewport(UICamera);
 
         game.gameStage = new Stage(game.gameViewport);
         game.UIStage = new Stage(game.UIViewport);
@@ -84,7 +84,8 @@ public abstract class Level extends GameRelated implements Disposable, Screen {
         shapeRenderer = new ShapeRenderer();
 
         //PlayerHud Creation
-        playerStatisticsHUD = new PlayerStatisticsHUD(game.player, game.font, spriteBatch, shapeRenderer);
+        playerStatisticsHUD = new PlayerStatisticsHUD(game, game.player, game.font, spriteBatch, shapeRenderer);
+        game.UIStage.addActor(playerStatisticsHUD);
         afterShow();
     }
 
@@ -145,6 +146,14 @@ public abstract class Level extends GameRelated implements Disposable, Screen {
     @Override
     public void resume() {
 
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+
+        playerStatisticsHUD.setSize(game.UIStage.getWidth(), 30);
+        playerStatisticsHUD.setPosition(0, game.UIStage.getHeight(), Align.topLeft);
     }
 
     @Override
