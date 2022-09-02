@@ -29,11 +29,33 @@
       b: 0
       a: 1
     }
+    GREEN: {
+      r: 0.29803923
+      g: 0.81960785
+      b: 0.21568628
+      a: 1
+    }
+    RED: {
+      r: 0.91764706
+      g: 0.1254902
+      b: 0.15294118
+      a: 1
+    }
     WHITE: {
       r: 1
       g: 1
       b: 1
       a: 1
+    }
+  }
+  TintedDrawable: {
+    GREEN_PIXEL: {
+      name: white-pixel
+      color: GREEN
+    }
+    RED_PIXEL: {
+      name: white-pixel
+      color: RED
     }
   }
   com.viennastudio.adventure.hud.ChatBox$ChatBoxStyle: {
@@ -73,6 +95,11 @@
       fontColor: ACCENT_2_LIGHT
     }
   }
+  ProgressBarStyle: {
+    default-horizontal: {
+      background: button
+    }
+  }
   TextButtonStyle: {
     default: {
       font: Silkscreen
@@ -86,6 +113,15 @@
   TextTooltipStyle: {
     default: {
       label: default
+    }
+  }
+  com.viennastudio.adventure.hud.MentalHealthBar$MentalHealthBarStyle: {
+    default: {
+      font: Silkscreen
+      fontColor: BLACK
+      background: RED_PIXEL
+      bar: GREEN_PIXEL
+      borderWidth: 2
     }
   }
 }

@@ -82,6 +82,46 @@ atlasData: {
 			type: TEXTURE
 			hidden: false
 		}
+		{
+			file: null
+			bgColor: {
+				r: 0
+				g: 0
+				b: 0
+				a: 1
+			}
+			tint: null
+			tintName: GREEN
+			name: GREEN_PIXEL
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			tvgData: null
+			type: PIXEL
+			hidden: false
+		}
+		{
+			file: null
+			bgColor: {
+				r: 0
+				g: 0
+				b: 0
+				a: 1
+			}
+			tint: null
+			tintName: RED
+			name: RED_PIXEL
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			tvgData: null
+			type: PIXEL
+			hidden: false
+		}
 	]
 	fontDrawables: [
 		{
@@ -147,6 +187,26 @@ jsonData: {
 				a: 1
 			}
 			name: BLACK
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.29803923
+				g: 0.81960785
+				b: 0.21568628
+				a: 1
+			}
+			name: GREEN
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.91764706
+				g: 0.1254902
+				b: 0.15294118
+				a: 1
+			}
+			name: RED
 		}
 		{
 			class: com.ray3k.skincomposer.data.ColorData
@@ -1390,7 +1450,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: false
-						value: null
+						value: button
 					}
 					disabledBackground: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -1908,6 +1968,75 @@ jsonData: {
 				deletable: true
 			}
 			declareAfterUIclasses: false
+		}
+		{
+			fullyQualifiedName: com.viennastudio.adventure.hud.MentalHealthBar$MentalHealthBarStyle
+			displayName: MentalHealthBarStyle
+			styles: [
+				{
+					name: default
+					properties: [
+						{
+							name: font
+							type: FONT
+							value: Silkscreen
+						}
+						{
+							name: fontColor
+							type: COLOR
+							value: BLACK
+						}
+						{
+							name: background
+							type: DRAWABLE
+							value: RED_PIXEL
+						}
+						{
+							name: bar
+							type: DRAWABLE
+							value: GREEN_PIXEL
+						}
+						{
+							name: borderWidth
+							type: NUMBER
+							value: 2
+						}
+					]
+					deletable: false
+				}
+			]
+			templateStyle: {
+				name: template
+				properties: [
+					{
+						name: font
+						type: FONT
+						value: null
+					}
+					{
+						name: fontColor
+						type: COLOR
+						value: null
+					}
+					{
+						name: background
+						type: DRAWABLE
+						value: null
+					}
+					{
+						name: bar
+						type: DRAWABLE
+						value: null
+					}
+					{
+						name: borderWidth
+						type: NUMBER
+						value: 0
+					}
+				]
+				deletable: true
+			}
+			declareAfterUIclasses: true
 		}
 	]
 }
