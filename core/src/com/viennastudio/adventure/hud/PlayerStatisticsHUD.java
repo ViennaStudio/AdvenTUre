@@ -5,22 +5,35 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Align;
+import com.viennastudio.adventure.AdvenTUreGame;
 import com.viennastudio.adventure.util.Constants;
 import com.viennastudio.adventure.entities.Player;
 
-public class PlayerStatisticsHUD {
+public class PlayerStatisticsHUD extends Group {
     private final Player player;
     private final ShapeRenderer renderer;
     private final BitmapFont font;
     private final SpriteBatch spriteBatch;
+    private final MentalHealthBar mentalHealthBar;
     private final float staticWidth = 350f;
 
-    public PlayerStatisticsHUD(Player player, BitmapFont font, SpriteBatch spriteBatch, ShapeRenderer renderer) {
+    public PlayerStatisticsHUD(AdvenTUreGame game, Player player, BitmapFont font, SpriteBatch spriteBatch, ShapeRenderer renderer) {
         this.player = player;
         this.font = font;
         this.spriteBatch = spriteBatch;
         this.renderer = renderer;
+
+        mentalHealthBar = new MentalHealthBar(player, game.skin);
+        mentalHealthBar.setSize(200, getHeight());
+        mentalHealthBar.setFontScale(0.66f);
+        addActor(mentalHealthBar);
+    }
+
+    @Override
+    protected void sizeChanged() {
+        mentalHealthBar.setSize(200, getHeight());
     }
 
     public void drawHudText() {
@@ -31,7 +44,7 @@ public class PlayerStatisticsHUD {
     }
 
     public void drawHudGraphics() {
-        drawMentalHealthBar();
+
     }
 
     private void drawTextHealthBar() {
@@ -49,22 +62,5 @@ public class PlayerStatisticsHUD {
         GlyphLayout layout = new GlyphLayout(this.font, "ECTS: " + player.getECTS() + "/" + Constants.MAX_ECTS, Color.WHITE, Constants.WINDOW_WIDTH - startingPos, Align.center, false);
         this.font.setColor(Color.WHITE);
         this.font.draw(this.spriteBatch, layout, startingPos, Constants.WINDOW_HEIGHT - 10f);
-    }
-
-    private void drawMentalHealthBar() {
-        float startingPos = 205f;
-        float dynamicWidth = ((float) player.getMentalHealth() / player.getMaxMentalHealth() * staticWidth);
-        float height = 30f;
-        // Red Bar beneith the green
-        this.renderer.setColor(Color.RED);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - height, staticWidth, height);
-        // Green Bar
-        this.renderer.setColor(Color.GREEN);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - height, dynamicWidth, height);
-        // Outline
-        this.renderer.setColor(Color.WHITE);
-        this.renderer.setAutoShapeType(true);
-        this.renderer.set(ShapeRenderer.ShapeType.Line);
-        this.renderer.rect(startingPos, Constants.WINDOW_HEIGHT - height, staticWidth, height);
     }
 }
