@@ -104,7 +104,7 @@ public class MainMenuScreen extends GameRelated implements Screen {
     @Override
     public void render(float delta) {
         act(delta);
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(game.skin.getColor("ACCENT_1"));
 
         camera.update();
         game.UIBatch.setProjectionMatrix(camera.combined);
