@@ -45,9 +45,7 @@ public class MainMenuScreen extends GameRelated implements Screen {
 
     @Override
     public void show() {
-        Skin orangeButton = new Skin(Gdx.files.internal("skin/orange-button.json"));
-
-        final Button exitButton = new TextButton("* Exit", orangeButton, "default");
+        final Button exitButton = new TextButton("* Exit", game.skin, "default");
         exitButton.setSize(300, 60);
         exitButton.setPosition(Gdx.graphics.getWidth() /2f - 10, 200, Align.bottomRight);
         exitButton.addListener(new ClickListener() {
@@ -58,7 +56,7 @@ public class MainMenuScreen extends GameRelated implements Screen {
         });
         game.UIStage.addActor(exitButton);
 
-        final Button playButton = new TextButton("Play >", orangeButton, "default");
+        final Button playButton = new TextButton("Play >", game.skin, "default");
         playButton.setOrigin(Align.center);
         playButton.setSize(
                 300,
@@ -106,7 +104,7 @@ public class MainMenuScreen extends GameRelated implements Screen {
     @Override
     public void render(float delta) {
         act(delta);
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(game.skin.getColor("ACCENT_1"));
 
         camera.update();
         game.UIBatch.setProjectionMatrix(camera.combined);

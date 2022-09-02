@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 public class KeyMap {
 
     public static final int PAUSE_KEY = Input.Keys.ESCAPE;
+    public static final int CONTINUE_CHATBOX_KEY = Input.Keys.SPACE;
 
     public static Constants.DIRECTION directionForKey(int keyCode) {
         switch (keyCode) {

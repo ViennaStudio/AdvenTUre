@@ -1,33 +1,40 @@
 
-orange-button.png
+adventure.png
 size: 1024, 1024
 format: RGBA8888
 filter: Linear, Linear
 repeat: none
 Silkscreen
   rotate: false
-  xy: 1, 81
+  xy: 1, 23
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
+ChatboxBG
+  rotate: false
+  xy: 1, 537
+  size: 640, 240
+  orig: 640, 240
+  offset: 0, 0
+  index: -1
 button
   rotate: false
-  xy: 1, 59
+  xy: 643, 757
   size: 80, 20
   orig: 80, 20
   offset: 0, 0
   index: -1
 button-clicked
   rotate: false
-  xy: 515, 573
+  xy: 1, 1
   size: 80, 20
   orig: 80, 20
   offset: 0, 0
   index: -1
 button-hover
   rotate: false
-  xy: 1, 37
+  xy: 515, 515
   size: 80, 20
   orig: 80, 20
   offset: 0, 0

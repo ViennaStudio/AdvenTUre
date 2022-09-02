@@ -1,0 +1,91 @@
+{
+  BitmapFont: {
+    Silkscreen: {
+      file: Silkscreen.fnt
+    }
+  }
+  Color: {
+    ACCENT_1: {
+      r: 0
+      g: 0
+      b: 0.2
+      a: 1
+    }
+    ACCENT_2_DARK: {
+      r: 1
+      g: 0.4
+      b: 0
+      a: 1
+    }
+    ACCENT_2_LIGHT: {
+      r: 1
+      g: 0.49803922
+      b: 0.16470589
+      a: 1
+    }
+    BLACK: {
+      r: 0
+      g: 0
+      b: 0
+      a: 1
+    }
+    WHITE: {
+      r: 1
+      g: 1
+      b: 1
+      a: 1
+    }
+  }
+  com.viennastudio.adventure.hud.ChatBox$ChatBoxStyle: {
+    default: {
+      background: ChatboxBG
+      font: Silkscreen
+      borderWidth: 20
+    }
+  }
+  ButtonStyle: {
+    default: {
+      up: button
+      down: button-clicked
+      over: button-hover
+      focused: button-hover
+    }
+  }
+  LabelStyle: {
+    default: {
+      font: Silkscreen
+      fontColor: WHITE
+    }
+    BLACK: {
+      font: Silkscreen
+      fontColor: BLACK
+    }
+    ACCENT_1: {
+      font: Silkscreen
+      fontColor: ACCENT_1
+    }
+    ACCENT_2_DARK: {
+      font: Silkscreen
+      fontColor: ACCENT_2_DARK
+    }
+    ACCENT_2_LIGHT: {
+      font: Silkscreen
+      fontColor: ACCENT_2_LIGHT
+    }
+  }
+  TextButtonStyle: {
+    default: {
+      font: Silkscreen
+      fontColor: WHITE
+      up: button
+      down: button-clicked
+      over: button-hover
+      focused: button-hover
+    }
+  }
+  TextTooltipStyle: {
+    default: {
+      label: default
+    }
+  }
+}
