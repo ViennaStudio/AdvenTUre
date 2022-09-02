@@ -12,7 +12,7 @@ public abstract class GameRelated implements Disposable {
 
     public void resize(int width, int height) {
         game.gameStage.getViewport().update(width, height);
-        game.UIStage.getViewport().update(width, height);
+        game.UIStage.getViewport().update(width, height, true);
     }
 
     protected void act(float deltaTime) {
