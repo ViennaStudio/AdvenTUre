@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.viennastudio.adventure.entities.AnimationMap;
 import com.viennastudio.adventure.entities.Player;
 import com.viennastudio.adventure.screens.MainMenuScreen;
+import com.viennastudio.adventure.screens.SplashWorker;
 import com.viennastudio.adventure.util.AnimationLoader;
 
 
@@ -36,8 +37,12 @@ public class AdvenTUreGame extends Game {
     private Texture playerDownTexture;
     private Texture playerLeftTexture;
     private Texture playerRightTexture;
+    private SplashWorker splashWorker;
 
     public void create() {
+        //Close SplashScreen
+        splashWorker.closeSplashScreen();
+
         gameBatch = new SpriteBatch();
         UIBatch = new SpriteBatch();
         gameStage = new Stage();
@@ -91,4 +96,13 @@ public class AdvenTUreGame extends Game {
         if (UIBatch != null) UIBatch.dispose();
         font.dispose();
     }
+
+    public SplashWorker getSplashWorker() {
+        return splashWorker;
+    }
+
+    public void setSplashWorker(SplashWorker splashWorker) {
+        this.splashWorker = splashWorker;
+    }
+
 }
