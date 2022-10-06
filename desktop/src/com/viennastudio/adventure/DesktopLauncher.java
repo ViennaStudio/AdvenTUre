@@ -11,6 +11,8 @@ public class DesktopLauncher {
 		config.setWindowedMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 		config.setForegroundFPS(60);
 		config.setTitle("AdvenTUre");
-		new Lwjgl3Application(new AdvenTUreGame(), config);
+		AdvenTUreGame game = new AdvenTUreGame();
+		game.setSplashWorker(new DesktopSplashWorker());
+		new Lwjgl3Application(game, config);
 	}
 }
